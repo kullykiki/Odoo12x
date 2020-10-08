@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+          
+        <record id="m_dc_status_1" model="dc.x_master_dc_status">
+            <field name="x_name">สร้างเอกสาร</field>
+        </record>
+        <record id="m_dc_status_2" model="dc.x_master_dc_status">
+            <field name="x_name">รอการพิจารณาทบทวน และอนุมัติ</field>
+        </record>
+        <record id="m_dc_status_3" model="dc.x_master_dc_status">
+            <field name="x_name">เผยแพร่บนระบบแล้ว</field>
+        </record>
+        <record id="m_dc_status_4" model="dc.x_master_dc_status">
+            <field name="x_name">ยกเลิก</field>
+        </record>
+        
+    </data>
+</odoo>

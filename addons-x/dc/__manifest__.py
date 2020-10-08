@@ -19,11 +19,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail','smile_base_automation'],
+    'depends': ['base','hr','mail','smile_base_automation'],
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'security/group.xml',
+        'data/m_status.xml',
         'views/automation.xml',
         'views/assets.xml',
         'views/schedule.xml',
@@ -31,6 +32,7 @@
         'views/serveraction_masterlist.xml',
         'views/serveraction_wizard.xml',
         'views/views.xml',
+        'views/view_dar.xml',
         'views/templates.xml',
         'views/menu.xml',
         'views/master/menu.xml',

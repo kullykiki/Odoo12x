@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record model="ir.ui.view" id="dc.x_dc_dar_form">
+            <field name="name">x_dc_dar_form</field>
+            <field name="model">dc.x_dc_dar</field>
+            <field name="arch" type="xml">
+                <form string="Document Action Request (DAR)">
+                <header>
+                    <field name="x_status_dar"  widget="statusbar" clickable="1" domain="[('id','!=',6)]"/>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_649)d" 
+                            type="action" 
+                            style="float:left;"
+                            attrs="{'invisible': [('x_status_dar','!=',1)]}"
+                            string="แจ้งขอดำเนินการ">
+                    </button>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_736)d" type="action" 
+                            style="float:left; margin-left:5px;"
+                            attrs="{'invisible': [('x_status_dar','!=',3)]}"
+                            string="ยกเลิกใบ DAR">
+                    </button>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_650)d" type="action" 
+                            style="float:left;"
+                            attrs="{'invisible': [('x_status_dar','!=',3)]}"
+                            groups="base.group_system,DC.qa"
+                            string="เอกสารพร้อมเผยแพร่">
+                    </button>
+                
+                
+                </header>
+                
+                <sheet string="Document Action Request">
+                    <label for="title" string="แจ้งขอดำเนินการเอกสาร / DAR" style="font-size:23px; font-weight:bold;"/>
+                    
+                    <br/>
+                    <hr style="border-bottom:1px solid #ccc"/>
+                    <group>
+                    <group>
+                        
+                        <field name="x_name" readonly="1"/>
+                        <field name="x_purpose" attrs="{'readonly': [('x_status_dar','!=',1)]}"  options="{'no_open': True,'no_create': True}"  required="1" />
+                        <field name="x_doc_maker" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}" options="{'no_open': True,'no_create': True}"/>
+                        <field name="x_dept" readonly='1'   domain="[('company_id','=','TTT BB')]" options="{'no_open': True,'no_create': True}" required="1" />
+                        <field name="x_inspector" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}"  options="{'no_open': True,'no_create': True}"/>
+                        <field name="x_approver" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}"  options="{'no_open': True,'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="create_date"  string="วันที่ร้องขอ"/>
+                        <field name="x_doc_type" attrs="{'readonly': [('x_status_dar','!=',1)]}"  options="{'no_open': True,'no_create': True}" required="1" />
+                        
+                        <field name="create_uid"  readonly="1" string="ชื่อผู้บันทึกใบ DAR"/>
+                        
+                        <field name="x_request_phone" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}"/>
+                        <field name="x_privacy" required='1' attrs="{'readonly': [('x_status_dar','!=',1)]}"/>
+                    </group>
+                    </group>
+                    
+                    <div>
+                    <group string="รายละเอียดเอกสาร">
+                        <group>
+                        
+                        <field name="x_old_doc" domain="[('x_cancel_doc','!=',True), ('x_dept.id', '=', x_dept), ('x_use_doc','=',True)]" attrs="{'required': [('x_purpose','!=', 1)],
+                            'invisible': [('x_purpose','=', 1)],'readonly': [('x_status_dar','!=',1)]}" options="{'no_open': True,'no_create': True}"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <group>
+                        <field name="x_doc_id" attrs="{'invisible': [('x_purpose','!=',1)]}"  required="1" string="รหัสเอกสาร"/>
+                        <field name="x_comp_check_id" invisible='1' attrs="{'required': [('create_date','=', False),('x_purpose','=', 1)]}"/>
+                        <field name="x_revise_no" required='1' readonly='1' attrs="{'invisible': [('x_purpose','=', 1)],'readonly': [('x_status_dar','!=',1)]}"
+                                string="แก้ไขครั้งที่ (เอกสารเดิม)"/>
+                        </group>
+                        <group>
+                        <field name="x_doc_name" attrs="{'readonly': [('x_status_dar','!=',1)]}"  required="1" string="ชื่อเอกสาร"/>
+                        <field name="x_start_date" attrs="{'required': [('x_purpose','!=', 1)],'invisible': [('x_purpose','=', 1)],
+                                'readonly': [('x_status_dar','!=',1)]}"
+                                string="วันที่มีผลบังคับใช้"/>
+                        </group>
+                    </group>
+                    <group>
+
+                    </group>
+                    </div>
+                    
+                    <div>
+                    <group string="รายละเอียดการแก้ไข "
+                            attrs="{'invisible': ['|',('x_purpose','=', 1),('x_purpose','=', 3)],'readonly': [('x_status_dar','!=',1)]}">
+                    </group>
+                    <group string="รายละเอียดการยกเลิกเอกสาร"
+                            attrs="{'invisible': ['|',('x_purpose','=', 1),('x_purpose','=', 2)],'readonly': [('x_status_dar','!=',1)]}">
+                    </group>
+                    <group>
+                        <group>
+                        <field name="x_new_start_date" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}" 
+                                string="วันที่มีผลบังคับใช้ "/>
+
+                        <field name="x_page" string="หน้าที่แก้ไข"
+                                attrs="{'invisible': ['|','|',('x_purpose','=', 1),('x_purpose','=', 3),('x_purpose','=', False)],'readonly': [('x_status_dar','!=',1)],
+                                'required': [('x_purpose','=',2)]}" />
+                        </group>
+                        <group>
+                        <field name="x_new_revise" required="1"  attrs="{'invisible': [('x_purpose','!=', 2)],'readonly': [('x_status_dar','!=',1)]}"
+                                string="แก้ไขครั้งที่"/>
+                        </group> 
+                    </group>
+                
+                    <group>
+                        <field name="x_detail" required="1" string="รายละเอียดเอกสาร"
+                            attrs="{'readonly': [('x_status_dar','!=',1)]}" />
+                    </group>
+                    
+                    <group>
+                        <group>
+                        <field name="x_attach" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                        <field name="x_check_attach_comp" invisible="1"/>
+                        </group>
+                    </group>
+                    <div attrs="{'invisible': [('x_attach','!=', 'y')]}" >
+                        <button class="btn btn-primary" 
+                            name="%(dc.action_server_692)d" type="action" 
+                            style="float:left;" 
+                            attrs="{'invisible': [('x_check_attach_comp','=', 'T')]}"
+                            string="อัพโหลดเอกสารต้นฉบับ/คลิปวิดีโอ" >
+                        </button>
+                        <button class="btn btn-primary" 
+                            name="%(dc.action_server_695)d" type="action" 
+                            style="float:left; margin-left:5px;"
+                            attrs="{'invisible': [('x_check_attach_comp','=', 'F')]}"
+                            string="แก้ไขไฟล์เอกสารต้นฉบับ/คลิป" >
+                        </button>
+                    </div>
+                    <group>
+                        <field name="x_12m_attach" attrs="{'invisible': [('x_attach','!=', 'y')]}" readonly="1" 
+                                string="แนบไฟล์รูป คลิปวีดีโอ หรือเอกสารที่เกี่ยวข้อง">
+                                <tree>
+                                    <field name="x_name"/>
+                                    <field name="x_doc_name"/>
+                                    <field name="x_revise_no"/>
+                                    <field name="x_publish_date"/>
+                                    <field name="x_m21_dc_dar"/>
+                                    <field name="x_dept"/>
+                                </tree>
+                        </field>
+                    </group>
+                    </div>
+                    
+                    <group>
+                        <field name="x_cancel_reason" readonly='1' attrs="{'invisible': ['|',('x_status_dar','!=',6)]}"/>
+                    </group>
+                    
+                    <notebook groups="base.group_system,DC.qa">
+                    <page attrs="{'invisible': ['|',('x_status_dar','=', 1),('x_status_dar','=', 2)]}" string="สำหรับเจ้าหน้าที่ควบคุมเอกสาร">
+                        <group string="เผยแพร่เอกสารในระบบ">
+                        <group>
+                            <field name="x_publish_date" readonly='1' context="{'default_x_m21_dc_dar': id}"  attrs="{'readonly': ['|',('x_status_dar','=',5),
+                            ('x_status_dar','=',6)]}"/>
+                        </group>
+                        </group>
+                        
+                        <div attrs="{'invisible': [('x_attach','!=', 'n')]}" >
+                        <button class="btn btn-primary" 
+                                name="%(dc.action_server_611)d" type="action" 
+                                attrs="{'invisible': [('x_check_attach_comp','=', 'T')]}"
+                                style="float:left;" 
+                                string="อัพโหลดเอกสารเผยแพร่ในระบบ/คลิปวิดีโอ" >
+                        </button>
+                        </div>
+                        <group>
+                            <field name="x_attach_pdf_doc" options="{'no_create': True}" context="{'default_x_m21_dc_dar': id}" domain = "[('x_m21_dc_dar','=',id)]">
+                                <tree  >
+                                    <field name="x_name"/>
+                                    <field name="x_doc_name"/>
+                                    <field name="x_revise_no"/>
+                                    <field name="x_publish_date"/>
+                                    <field name="x_m21_dc_dar"/>
+                                    <field name="x_dept"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dc.x_dc_dar_form_admin">
+            <field name="name">x_dc_dar_form_admin</field>
+            <field name="model">dc.x_dc_dar</field>
+            <field name="arch" type="xml">
+                <form string="Document Action Request (DAR)">
+                <header>
+                    <field name="x_status_dar"  widget="statusbar" clickable="1" domain="[('id','!=',6)]"/>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_649)d" type="action" 
+                            style="float:left;"
+                            attrs="{'invisible': [('x_status_dar','!=',1)]}"
+                            string="แจ้งขอดำเนินการ">
+                    </button>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_651)d" type="action" 
+                            style="float:left; margin-left:5px;"
+                            attrs="{'invisible': [('x_status_dar','!=',3)]}"
+                            string="ยกเลิกใบ DAR">
+                    </button>
+                    <button class="btn btn-primary" 
+                            name="%(dc.action_server_650)d" type="action" 
+                            style="float:left;"
+                            attrs="{'invisible': [('x_status_dar','!=',3)]}"
+                            string="เอกสารพร้อมเผยแพร่">
+                    </button>
+                
+                
+                </header>
+
+                <sheet string="Document Action Request">
+                    <label for="title" string="แจ้งขอดำเนินการเอกสาร / DAR" style="font-size:23px; font-weight:bold;"/>
+                    
+                    <br/>
+                    <hr style="border-bottom:1px solid #ccc"/>
+                    <group>
+                    <group>
+                        <field name="x_name" readonly="1"/>
+                        <field name="x_purpose"  options="{'no_open': True,'no_create': True}"  required="1" />
+                        <field name="x_doc_maker" required="1" attrs="{'readonly': [('x_status_dar','!=',1)]}"  options="{'no_open': True,'no_create': True}"/>
+                        <field name="x_dept"  readonly='1' domain="[('company_id','=','TTT BB')]" options="{'no_open': True,'no_create': True}" required="1" />
+
+                        <field name="x_inspector" required="1" options="{'no_open': True,'no_create': True}"/>
+                        <field name="x_approver" required="1" options="{'no_open': True,'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="create_date"  string="วันที่ร้องขอ"/>
+                        <field name="x_doc_type"   options="{'no_open': True,'no_create': True}" required="1" />
+                        
+                        <field name="create_uid"  readonly="1" string="ชื่อผู้บันทึกใบ DAR"/>
+                        <field name="x_request_phone" required="1"/>
+                        <field name="x_privacy" required="1"/>
+                    </group>
+                    </group>
+                    
+                    <div>
+                    <group string="รายละเอียดเอกสาร">
+                        <group>
+                        <field name="x_old_doc" domain="[('x_cancel_doc','!=',True), ('x_dept.id', '=', x_dept), ('x_use_doc','=',True)]" attrs="{'required': [('x_purpose','!=', 1)],
+                        'invisible': [('x_purpose','=', 1)]}" options="{'no_open': True,'no_create': True}"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <group>
+                        <field name="x_doc_id" attrs="{'readonly': ['|','|',('x_status_dar','=',5),('x_status_dar','=',6),('x_purpose','!=',1)]}"  required="1" string="รหัสเอกสาร"/>
+                        
+                        <field name="x_comp_check_id"  invisible='1' attrs="{'required': [('create_date','=', False),('x_purpose','=', 1)]}"/>
+                        <field name="x_revise_no" required='1' readonly='1' attrs="{'invisible': [('x_purpose','=', 1)]}"
+                                string="แก้ไขครั้งที่ (เอกสารเดิม)"/>
+                        </group>
+                        <group>
+                        <field name="x_doc_name" required="1" string="ชื่อเอกสาร"/>
+                        <field name="x_start_date" attrs="{'required': [('x_purpose','!=', 1)],'invisible': [('x_purpose','=', 1)]}"
+                                string="วันที่มีผลบังคับใช้"/>
+                        
+                        </group>
+                    </group>
+                    <group>
+
+                    </group>
+                    </div>
+                    
+                    <div>
+                    <group string="รายละเอียดการแก้ไข "
+                            attrs="{'invisible': ['|',('x_purpose','=', 1),('x_purpose','=', 3)],'readonly': [('x_status_dar','!=',1)]}">
+                    </group>
+                    <group string="รายละเอียดการยกเลิกเอกสาร"
+                            attrs="{'invisible': ['|',('x_purpose','=', 1),('x_purpose','=', 2)],'readonly': [('x_status_dar','!=',1)]}">
+                    </group>
+                    <group>
+                        <group>
+                        <field name="x_new_start_date"  
+                                required="1" string="วันที่มีผลบังคับใช้"/>
+                        <field name="x_page" string="หน้าที่แก้ไข"
+                                attrs="{'invisible': ['|','|',('x_purpose','=', 1),('x_purpose','=', 3),('x_purpose','=', False)],
+                                'required': [('x_purpose','=',2)]}" />
+                        </group>
+                        <group>
+                        <field name="x_new_revise" required="1"  attrs="{'invisible': [('x_purpose','=', 3)]}"
+                                string="แก้ไขครั้งที่"/>
+
+                        </group> 
+                    </group>
+                
+                    <group>
+                        <field name="x_detail" required="1" string="รายละเอียดเอกสาร" />
+                    </group>
+                    
+                    <group>
+                        <group>
+                        <field name="x_attach" required="1" />
+                        <field name="x_check_attach_comp" invisible="1" />
+                        </group>
+                    </group>
+                    
+          
+                    <group>
+                        <field name="x_12m_attach" attrs="{'invisible': [('x_attach','!=', 'y')]}" 
+                                string="แนบไฟล์รูป คลิปวีดีโอ หรือเอกสารที่เกี่ยวข้อง">
+                                <tree create="false">
+                                    <field name="x_name"/>
+                                    <field name="x_doc_name"/>
+                                    <field name="x_revise_no"/>
+                                    <field name="x_publish_date"/>
+                                    <field name="x_m21_dc_dar"/>
+                                    <field name="x_dept"/>
+                                </tree>
+                        </field>
+                       
+                    </group>
+                    </div>
+                    
+                    <group>
+                        <field name="x_cancel_reason" readonly='1' attrs="{'invisible': ['|',('x_status_dar','!=',6)]}"/>
+                    </group>
+                    
+                    <notebook groups="base.group_system,DC.qa">
+                    <page attrs="{'invisible': ['|',('x_status_dar','=', 1),('x_status_dar','=', 2)]}" string="สำหรับเจ้าหน้าที่ควบคุมเอกสาร">
+                        <group string="เผยแพร่เอกสารในระบบ">
+
+                        <group>
+                            <field name="x_publish_date" readonly='1' context="{'default_x_m21_dc_dar': id}"  attrs="{'readonly': ['|',('x_status_dar','=',5),
+                            ('x_status_dar','=',6)]}"/>
+                        </group>
+                        </group>
+                        <div attrs="{'invisible': [('x_attach','!=', 'n')]}" >
+                        <button class="btn btn-primary" 
+                            name="611" type="action" 
+                            attrs="{'invisible': [('x_check_attach_comp','=', 'T')]}"
+                            style="float:left;" 
+                            string="อัพโหลดเอกสารเผยแพร่ในระบบ/คลิปวิดีโอ" >
+                        </button>
+                        </div>
+                        <group>
+                        
+                            <field name="x_attach_pdf_doc" options="{'no_create': True}" context="{'default_x_m21_dc_dar': id}" domain = "[('x_m21_dc_dar','=',id)]">
+                                <tree  >
+                                    <field name="x_name"/>
+                                    <field name="x_doc_name"/>
+                                    <field name="x_revise_no"/>
+                                    <field name="x_publish_date"/>
+                                    <field name="x_m21_dc_dar"/>
+                                    <field name="x_dept"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                
+                <script>
+                        $('.o_datepicker_input').keypress(function(e) {
+                        e.preventDefault();
+                        });
+                    
+                        $('.o_datepicker_input').on('paste', function(e){ e.preventDefault(); alert('pasting!'); });
+
+                </script>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dc.x_dc_dar_qweb">
+            <field name="name">x_dc_dar_qweb</field>
+            <field name="model">dc.x_dc_dar</field>
+            <field name="arch" type="xml">
+                <form>
+                <t t-name="website.dc-for-qc-qa">
+                    <t t-call="website.layout">
+                    <style>
+                        .o_form_view.o_form_nosheet {padding:0px !important;}
+                        .fa-2x {font-size:3em;}
+                    </style>
+                    <div id="wrap" class="oe_structure oe_empty">
+                        <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-brand" href="#">
+                            <img src="/dc/static/src/img/3bblogo_guideline.png" style="width:5em;"></img>
+                        </span>
+                        <span class="p-2 text-dark">
+                            <field name="create_uid"/> 
+                        </span>
+                        </nav>
+                        <section class="s_cover parallax s_parallax_is_fixed pb96 s_parallax_no_overflow_hidden bg-black-50 pt112" data-scroll-background-ratio="1" style="background-image: url(/dc/static/src/img/3bb_dc_bg_header.jpg); background-position: 50% -120px; background-size: 100%; background-blend-mode: color;">
+                        <span class="s_parallax_bg oe_img_bg oe_custom_bg" >
+                        </span>
+                        <div class="container">
+                            <div class="row s_nb_column_fixed">
+                            <div class="col-lg-12 s_title" data-name="Title">
+                                <h1 class="s_title_transparent" style="font-size: 62px; text-align: center;">Document Control</h1>
+                            </div>
+                            <div class="col-lg-12 s_text pt16 pb16" data-name="Text">
+                                <p class="lead" style="text-align: center;">
+                                <span style="color: rgb(239, 239, 239); font-size: 14px; text-align: left;">
+                                    เป็นระบบเพื่อให้เกิดความมั่นใจว่า เอกสารที่เกี่ยวข้องกับระบบบริหารงานคุณภาพของบริษัท 3BB ได้รับการควบคุมให้เป็นไปอย่างมีประสิทธิภาพ&amp;nbsp;&amp;nbsp;<br/></span>
+                                
+                                <span style="color: rgb(239, 239, 239); font-size: 14px; text-align: left;">พนักงานมีระเบียบขั้นตอนการปฏิบัติงาน วิธีการปฏิบัติงาน&amp;nbsp;&amp;nbsp;และเอกสารอื่นๆที่เกี่ยวข้อง 
+                                เพื่อใช้เป็นแนวทางในการปฏิบัติงานต่อไป&amp;nbsp;</span>&amp;nbsp;<br/>
+                                </p>
+                            </div>
+                            <div class="col-lg-12 s_btn text-center pt16 pb16" data-name="Buttons">
+                                <a href="https://devbb-12.jasfone.com/web?debug#id=&amp;action=698&amp;model=x_dc_master_list&amp;view_type=form&amp;menu_id=578" 
+                                class="btn btn-delta" style="font-size: 1.3rem !important; border-radius: 5px; padding:7px;" data-original-title="" title="" aria-describedby="tooltip418134">
+                                    Back to Start
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                        </section>
+                        
+                        <section class="s_text_image pt32 pb0">
+                        <div class="container">
+                            <div class="row align-items-center">
+                            <div class="pt16 pb16 col-lg-12">
+                                <h1 style="text-align: left;">
+                                <b>Document Control Officer</b>
+                                </h1>
+                                <h5>
+                                    <font style="color: rgb(156, 156, 148);">สำหรับเจ้าหน้าที่ควบคุมเอกสาร Document Control</font>
+                                </h5>
+                            </div>
+                            </div>
+                        </div>
+                        </section>
+                        <section class="s_features_grid pb24 pt0">
+                        <div class="container">
+                            <div class="row">
+                            <div class="col-lg-6 s_col_no_bgcolor pb24">
+                                <div class="row">
+                                <div class="col-lg-12 pt16 pb16" data-name="Box">
+                                    
+                                    <button type="action" name="%(dc.action_server_704)d"  style="border: none !important;  background-color: #fff !important;">
+                                    <div style="float:left;">
+                                        <span class="fa fa-2x fa-list rounded-circle s_features_grid_icon" style="background-color: rgb(255, 156, 0); color: rgb(255, 255, 255); padding:30px;" data-original-title="" title="" aria-describedby="tooltip185617"/>
+                                    </div>
+                                    <div class="s_features_grid_content" style="float:left; margin-left:20px;">
+                                        <h3 style="color:#4D778F;">DAR. Report</h3>
+                                        <p style="color:#4D778F;">ทะเบียนใบขอดำเนินการเอกสาร</p>
+                                    </div>
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 s_col_no_bgcolor pb24">
+                                <div class="row">
+                                <div class="col-lg-12 pt16 pb16" data-name="Box">
+                                    <button type="action" name="%(dc.action_server_705)d"  style="border: none !important;  background-color: #fff !important;">
+                                    <div style="float:left;">
+                                        <span class="bg-gamma fa fa-2x fa-clock-o rounded-circle s_features_grid_icon " style="padding:30px;" data-original-title="" title="" aria-describedby="tooltip913916"/>
+                                    </div>
+                                    <div class="s_features_grid_content" style="float:left; margin-left:20px;">
+                                        <h3 style="color:#4D778F;">Document History</h3>
+                                        <p style="color:#4D778F;">ประวัติเอกสาร</p>
+                                    </div>
+
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </section>
+                        <footer class="footer" style="background-color:#f5f5f5; color:#6c757d; padding-top:10px; box-shadow: 0px -4px 8px -2px rgba(204,204,204,1);">
+                        <div class="container">
+                            <p style="text-align:center;">Copyright &#169; Triple T Broadband, PCL.</p>
+                        </div>
+                        </footer>
+                    </div>
+                    </t>
+                </t>
+                <script>
+                    $(".o_control_panel").css('display','none')
+                </script>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dc.x_dc_dar_search">
+            <field name="name">x_dc_dar_search</field>
+            <field name="model">dc.x_dc_dar</field>
+            <field name="arch" type="xml">
+                <search string="Document Action Request">
+                    <field name="x_name" />
+                    <field name="x_doc_id"/>
+                    <field name="x_doc_name" />
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="dc.x_dc_dar_tree">
+            <field name="name">x_dc_dar_tree</field>
+            <field name="model">dc.x_dc_dar</field>
+            <field name="arch" type="xml">
+                <tree default_order="create_date desc" decoration-success="x_status_dar == 5" decoration-danger="x_status_dar == 6">
+                    <field name="x_name"/>
+                    <field name="x_doc_id" string="รหัสเอกสาร"/>
+                    <field name="x_doc_name" string="ชื่อเอกสาร"/>
+                    <field name="create_date" string="วันที่ร้องขอ"/>
+                    <field name="x_dept" />
+                    <field name="x_purpose"/>
+                    <field name="x_new_start_date" string="วันที่มีผลบังคับใช้"/>
+                    <field name="x_doc_type"/>
+                    <field name="x_publish_date"/>
+                    <field name="x_status_dar"  string="สถานะการดำเนินการ"/>
+                    <field name="x_request_name"/>
+                    <field name="create_uid" string="Login ผู้บันทึก"/> 
+                </tree>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+
+        <!-- dev_for_admin -->
+        <record model="ir.actions.act_window" id="dc.action_window_dev_for_admin">
+            <field name="name">แจ้งขอดำเนินการเอกสาร [DAR For Admin]</field>
+            <field name="res_model">dc.x_dc_dar</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record model="ir.actions.act_window.view" id="window_x_dc_dar_form_admin">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="dc.x_dc_dar_form_admin"/>
+            <field name="act_window_id" ref="dc.action_window_dev_for_admin"/>
+        </record>
+ 
+       <record model="ir.actions.act_window.view" id="window_x_dc_dar_tree_admin">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="context">{'default_x_status_dar':1,'default_create_uid':uid, 'group_by': ['x_status_dar']}</field>
+            <field name="view_id" ref="dc.x_dc_dar_tree"/>
+            <field name="act_window_id" ref="dc.action_window_dev_for_admin"/>
+        </record>
+
+
+        <!-- dev_for_admin -->
+        <record model="ir.actions.act_window" id="dc.action_window_home">
+            <field name="name">หน้าหลักสำหรับเจ้าหน้าที่</field>
+            <field name="res_model">dc.x_dc_dar</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="window_x_dc_dar_qweb">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="context">{'default_create_uid':uid}</field>
+            <field name="view_id" ref="dc.x_dc_dar_qweb" />
+            <field name="act_window_id" ref="dc.action_window_home" />
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem
+            id="menu_x_dc_dar_form_admin"
+            name="DAR Report"
+            action="dc.action_window_dev_for_admin"
+            groups="base.group_system,dc.qa"
+            parent="dc.dc_for_admin"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_x_dc_dar_qweb"
+            name="หน้าหลักสำหรับเจ้าหน้าที่"
+            action="dc.action_window_home"
+            parent="dc.home"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_x_dc_dar_form"
+            name="แจ้งขอดำเนินการเอกสาร [DAR For User]"
+            action="dc.action_server_743"
+            groups="base.group_system,dc.qa"
+            parent="dc.dc_for_user"
+            sequence="10"/>
+
+        
+    </data>
+
+</odoo>

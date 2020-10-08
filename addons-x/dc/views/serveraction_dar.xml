@@ -27,12 +27,13 @@ domains="[]"
 user_id = env.user.id
 user_email = env.user.email
 
+status_cancel = env.ref('dc.m_dc_status_4')[0].id
 user_dept = env['hr.employee'].sudo().search([['work_email','=',user_email]])
 if len(user_dept) > 0:
     user_dept_id  = user_dept[0]['department_id']['name']
-    domains="[['x_dept','=','{}'],['x_status_dar','!=',6]]".format(user_dept_id)
+    domains="[['x_dept','=','{}'],['x_status_dar','!=',status_cancel]]".format(user_dept_id)
 
-
+status_default = env.ref('dc.m_dc_status_1')[0].id
 action = {
     "name" : "แจ้งขอดำเนินการเอกสาร (DAR For User)",
     "type": "ir.actions.act_window",
@@ -40,7 +41,7 @@ action = {
     "view_mode": "tree,form",
     "res_model": "dc.x_dc_dar",
     "target" : 'current',
-    "context": {'default_x_status_dar':1,'default_create_uid':uid, 'group_by': ['x_status_dar']} ,
+    "context": {'default_x_status_dar':status_default,'default_create_uid':uid, 'group_by': ['x_status_dar']} ,
     "domain": domains 
     }
             </field>
