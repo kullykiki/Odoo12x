@@ -4,7 +4,7 @@
     <data>
         <template id="assets_backend" name="Font" inherit_id="web.assets_backend">
             <xpath expr=".">
-                <link rel="stylesheet" href="/dc/static/src/scss/style.scss"/>
+                <link rel="stylesheet" href="/sarabun_font/static/src/scss/style.scss"/>
             </xpath>
         </template>
     </data>

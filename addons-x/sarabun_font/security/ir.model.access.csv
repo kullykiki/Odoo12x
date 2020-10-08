@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sarabun_font_sarabun_font,sarabun_font.sarabun_font,model_sarabun_font_sarabun_font,,1,0,0,0

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Document Control",
+    'name': "Sarabun_font",
 
     'summary': """
-        ระบบจัดเก็บเอกสารสำหรับหน่วยงาน QC/QA""",
+        ฟอนต์ SarabunNew สำหรับ web""",
 
     'description': """
         Long description of module's purpose
@@ -19,24 +19,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','mail','smile_base_automation'],
+    'depends': ['base'],
+
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'security/group.xml',
-        'data/m_status.xml',
-        'views/automation.xml',
-        'views/schedule.xml',
-        'views/serveraction_dar.xml',
-        'views/serveraction_masterlist.xml',
-        'views/serveraction_wizard.xml',
+        # 'security/ir.model.access.csv',
+        'views/assets.xml',
         'views/views.xml',
         'views/templates.xml',
-        'views/menu.xml',
-        'views/master/view.xml',
-        'views/master/windowaction.xml',
-        'views/master/menu.xml',
-        'views/view_dar.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
