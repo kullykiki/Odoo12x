@@ -32,12 +32,12 @@
         'views/serveraction_masterlist.xml',
         'views/serveraction_wizard.xml',
         'views/views.xml',
-        'views/view_dar.xml',
         'views/templates.xml',
         'views/menu.xml',
-        'views/master/menu.xml',
         'views/master/view.xml',
         'views/master/windowaction.xml',
+        'views/master/menu.xml',
+        'views/view_dar.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
