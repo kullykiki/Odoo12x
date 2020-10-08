@@ -1,0 +1,201 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    
+    <record model="ir.ui.view" id="demo.x_demo_odoo_list">
+      <field name="name">x_demo_odoo_list</field>
+      <field name="model">demo.x_demo_odoo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+          <field name="x_products"/>
+          <field name="create_date" string="วันที่บันทึก"/>
+          <field name="x_active" />
+        </tree>
+      </field>
+    </record>
+
+
+
+    <!-- explicit list view 2 definition -->
+    
+    <record model="ir.ui.view" id="demo.x_demo_odoo_only_name_list">
+      <field name="name">x_demo_odoo_only_name_list</field>
+      <field name="model">demo.x_demo_odoo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+        </tree>
+      </field>
+    </record>
+
+
+
+
+    <!-- explicit form view definition -->
+    
+    <record model="ir.ui.view" id="demo.x_demo_odoo_form">
+      <field name="name">x_demo_odoo_form</field>
+      <field name="model">demo.x_demo_odoo</field>
+      <field name="arch" type="xml">
+        <form string="ข้อมูลลูกค้า Corporate">
+          <sheet>
+            
+            <!-- <link href="https://fonts.googleapis.com/css?family=Roboto|Taviraj" rel="stylesheet" />
+            <style>
+              .o_form_sheet{
+                font-family: 'Taviraj', 'Roboto', sans-serif;
+                color: red;
+              }
+            </style> -->
+            <!-- <label for="title" string="ข้อมูลลูกค้า Corporate" style="font-size:23px; font-weight:bold;"/> -->
+            <i class="fa fa-building fa-2x" style="padding-right:10px;" /><label for="x_name" string="บริษัท : " style="font-size:23px; font-weight:bold;"/><field name="x_name" style="font-size:23px; font-weight:bold;" />
+            <div class="oe_button_box" name="button_box">
+              <button name="toggle_x_active" type="object" class="oe_stat_button" icon="fa-archive">
+                <field name="x_active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;active&quot;}" />
+              </button>
+            </div>
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+              
+             <group>
+              <group>
+                <field name="x_title" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}"/>    
+              </group>
+              <group>
+                 
+              </group>
+            </group>             
+            <group>
+              <group>
+                <field name="x_company"/>  
+              </group>
+              <group>
+                <field name="x_branch"/>
+              </group>
+            </group>
+            
+            <group string = "ประเภทสินค้า">
+              <field name="x_products" widget="many2many_tags" options="{'color_field': 'x_color','no_create_edit': True, 'no_create':True, 'no_open':True}" />
+            </group>
+            <group string = "ผู้ติดต่อ">
+              <field name="x_contact"/>
+            </group>
+
+
+            <group>
+              <field name="x_remark"/>
+            </group>
+
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+
+
+    <!-- explicit kanban view definition -->
+
+    <record id="demo.x_demo_odoo_kanban" model="ir.ui.view">
+        <field name="name">x_demo_odoo_kanban</field>
+        <field name="model">demo.x_demo_odoo</field>
+        <field name="arch" type="xml">
+            <kanban >
+                <field name="x_name"/>
+                <field name="x_products"/>
+                <templates>
+                    
+                    <t t-name="kanban-box">
+                      
+                      <div class="oe_kanban_global_click">
+                        <div>
+                          <strong style="font-size:23px; font-weight:bold;">
+                            <field name="x_name"/>
+                          </strong> 
+                          <br />
+                          <hr />
+                        </div>
+                        <div>
+                          <field name="x_products" widget="many2many_tags" options="{'color_field': 'x_color'}" />
+                        </div> 
+                        <div>
+                          <ul class="fa-ul" style="padding-inline-start: 5px;">
+                              <li><i class="fa-li fa fa-globe fa-lg" ></i>   <field name="x_title"/></li>
+                              <li><i class="fa-li fa fa-university fa-lg" ></i>   <field name="x_company"/></li>
+                              <li><i class="fa-li fa fa-building fa-lg" ></i>   <field name="x_branch"/></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+   
+
+    <!-- explicit search view definition -->
+    <record id="x_demo_odoo_search" model="ir.ui.view">
+      <field name="name">x_demo_odoo_search</field>
+      <field name="model">demo.x_demo_odoo</field>
+      <field name="arch" type="xml">
+          <search >
+              <field name="x_name" string="Company" filter_domain="['|',('x_company','ilike',self),('x_branch','ilike',self)]"/>
+              <field name="x_title"/>
+              
+              <filter string="Inactive" name="In Active" domain="[('x_active','=',False)]"/>
+              <separator/>
+    
+              <group expand="1" string="Group By">
+                  <filter name="groupby_x_active" string="Active" domain="[]" context="{'group_by':'x_active'}"/>
+                  <separator/>
+                  <filter name="groupby_create_date" string="Creation Date" date="create_date" context = "{'group_by': 'create_date'}" />
+                 
+              </group>
+          </search>
+        </field>
+    </record>
+
+    <!-- actions opening views on models ir.actions.act_window.view -->
+    <!-- <record model="ir.actions.act_window.view" id="x_demo_odoo_list_only_name">
+      <field name="sequence" eval="1"/>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="x_demo_odoo_only_name_list"/>
+      <field name="act_window_id" ref="x_demo_odoo_action_window"/>
+    </record> -->
+
+
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="demo.x_demo_odoo_action_window">
+      <field name="name">Corporate Client</field>
+      <field name="res_model">demo.x_demo_odoo</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+   
+
+   
+
+    <!-- Top menu item -->
+    
+    <menuitem name="😎 Demo" id="demo.menu_root"/>
+   
+    <!-- menu categories -->
+    
+    <menuitem name="ระบบตัวอย่าง" id="demo.demo_menu" parent="demo.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="demo.menu_2" parent="demo.menu_root"/> -->
+   
+    <!-- actions -->
+    
+    <menuitem name="ข้อมูลลูกค้า Corporate" id="demo.x_demo_odoo" parent="demo.demo_menu"
+              action="demo.x_demo_odoo_action_window"/>
+    <!-- <menuitem name="Server to list" id="demo" parent="demo.menu_2"
+              action="demo.action_server"/> -->
+   
+  </data>
+</odoo>

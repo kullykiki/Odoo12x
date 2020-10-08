@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <menuitem
+            id="dc_configuration"
+            name="Configuration"
+            groups="base.group_system"
+            parent="dc.dc_for_dev"
+            sequence="16"/>
+
+
+        <menuitem
+            id="dc_conf_doc_type"
+            name="[M] ประเภทเอกสาร"
+            action="dc.action_window_m_doc_type"
+            groups="base.group_system"
+            parent="dc.dc_configuration"
+            sequence="10"/>
+
+        <menuitem
+            id="dc_conf_purpose"
+            name="[M] วัตถุประสงค์ยื่นคำร้อง"
+            action="dc.action_window_m_purpose"
+            groups="base.group_system"
+            parent="dc.dc_configuration"
+            sequence="10"/>
+
+        <menuitem
+            id="dc_conf_status"
+            name="[M] สถานะเอกสาร (DAR)"
+            action="dc.action_window_m_status"
+            groups="base.group_system,dc.qa"
+            parent="dc.dc_configuration"
+            sequence="10"/>
+
+    </data>
+
+</odoo>

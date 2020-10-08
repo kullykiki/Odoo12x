@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="fund_injured_export_hr_form">
+            <field name="name">hr.employee.form.fund_hr_form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <!-- <field name="name" position="before">
+                    <field name="employee_id"/>
+                </field> -->
+                <xpath position="before" expr="//label[@for='name']">
+                    <label for="employee_id" class="oe_edit_only"/>
+                        <h1>
+                            <field name="employee_id" placeholder="Employee's Id" />
+                        </h1>
+                </xpath>
+
+            </field>
+
+        </record>
+
+    </data>
+</odoo>

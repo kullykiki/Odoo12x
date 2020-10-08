@@ -1,0 +1,81 @@
+<odoo>
+    <data>
+        <record forcecreate="True" id="ir_cron_19" model="ir.cron">
+            <field name="name">[DC] Auto ยกเลิกเอกสาร</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"/>
+            <field name="state">code</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="True" name="active"/>
+            <field name="code">
+tn = datetime.date.today()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo],['x_ref_purpose','=',3]]):
+    file.write({'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_cancel_doc':True,'x_old_doc':False,'x_wait_cancel_doc':False})
+    old_file = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']],['x_ref_purpose','!=',3]])
+    for of in old_file:
+        of.write({'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_cancel_doc':False,'x_old_doc':False,'x_wait_cancel_doc':False,'x_end_doc':True})
+            </field>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_18" model="ir.cron">
+            <field name="name">[DC][MasterList] Auto Tags เอกสารกำลังใช้งาน</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"/>
+            <field name="state">code</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="True" name="active"/>
+            <field name="code">
+tn = datetime.datetime.now()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+for f in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo],['x_new_doc','=',False]]):
+  f.write({'x_last_doc':False})
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo]]):
+  if file['x_last_doc'] == True:
+    file.write({'x_use_doc': True })
+  else:
+    file.write({'x_use_doc': False })
+    file.write({'x_old_doc': True }) 
+  old_file = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']]])
+  old_file = old_file[:-1]
+  for of in old_file:
+    if of['x_end_doc'] == False:
+      of.write({'x_old_doc':True,'x_new_doc':False,'x_last_doc':False})
+  end_file = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']]])
+  end_file = end_file[:-2]
+  for ef in end_file:
+    ef.write({'x_end_doc':True,'x_old_doc':False})
+  cancel = env['dc.x_dc_master_list'].search(['|',['x_ref_purpose','=',3],['x_end_doc','=',True]])
+  cancel.write({'x_old_doc':False})
+            </field>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_15" model="ir.cron">
+            <field name="name">[DC][MasterList] Delete Tags 30 days Auto</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"/>
+            <field name="state">code</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="True" name="active"/>
+            <field name="code">
+tn = datetime.datetime.now()
+offset = datetime.timedelta(days=30)
+tn = tn - offset
+tn_end = "{:04d}-{:02d}-{:02d} 23:59:59".format(tn.year,tn.month,tn.day)
+for dc in env['dc.x_dc_master_list'].search([['create_date','&lt;=',tn_end],['x_new_doc','=',True]]):
+  dc.write({'x_new_doc': False })
+            </field>
+        </record>
+
+       
+    </data>
+</odoo>

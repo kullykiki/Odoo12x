@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="dc.action_window_m_doc_type">
+            <field name="name">[M] ประเภทเอกสาร</field>
+            <field name="res_model">dc.x_master_dc_doc_type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="dc.action_window_m_purpose">
+            <field name="name">[M] วัตถุประสงค์ยื่นคำร้อง</field>
+            <field name="res_model">dc.x_master_dc_purpose</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="dc.action_window_m_status">
+            <field name="name">[M] สถานะเอกสาร (DAR)</field>
+            <field name="res_model">dc.x_master_dc_status</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+   
+    </data>
+
+</odoo>

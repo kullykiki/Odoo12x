@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record model="ir.actions.server" id="dc.action_server_694">
+            <field name="name">[DC] Edit Attach Original File</field>
+            <field name="model_id" ref="model_dc_x_dc_wizard_edit"/>
+            <field name="state">code</field>
+            <field name="code">
+at_id = []
+for a_id in record['x_attach_doc']:
+    at_id.append(a_id.id)
+
+att_id = []
+for a_id in record['x_clip']:
+    att_id.append(a_id.id)
+
+for doc in env['dc.x_dc_dar'].search([['id','=',int(record['x_name'])]],limit=1)[0]['x_12m_attach']:
+    if record['x_url'] != False and ( record['x_url'][0:7] == 'http://' or record['x_url'][0:8] == 'https://' ):
+        doc.write({'x_doc_file_old':[(6,0,at_id)],'x_clip':[(6,0,att_id)],'x_attach_url':record['x_url'],'x_remark':record['x_remark']})
+    elif record['x_url'] != False and ( record['x_url'][0:7] != 'http://' or record['x_url'][0:8] != 'https://' ):
+        raise Warning('กรุณาตรวจสอบ url')
+    else:
+        doc.write({'x_doc_file_old':[(6,0,at_id)],'x_clip':[(6,0,att_id)],'x_remark':record['x_remark']})
+
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_730">
+            <field name="name">[DC] Save Attach Final</field>
+            <field name="model_id" ref="model_dc_x_dc_wizard_cancel_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+id_record = int(record['x_name'])
+at_id = []
+for a_id in record['x_attach_pdf_doc']:
+    at_id.append(a_id.id)
+for file in env['x_dc_dar'].search([['id','=',id_record]]):
+    file['x_12m_attach'].create({'x_m21_dc_dar':int(record['x_name']),'x_attach_pdf':[(6,0,at_id)],'x_new_doc':True,'x_last_doc':True})
+    file.write({'x_attach_pdf_doc': [(4, file['x_12m_attach'].id)]})
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_693">
+            <field name="name">[DC] Save Attach Original File</field>
+            <field name="model_id" ref="model_dc_x_dc_wizard_attach_file"/>
+            <field name="state">code</field>
+            <field name="code">
+at_id = []
+for a_id in record['x_attach_file']:
+    at_id.append(a_id.id)
+    
+att_id = []
+for a_id in record['x_clip']:
+    att_id.append(a_id.id)
+    
+p = env['dc.x_dc_dar'].search([['id','=',int(record['x_name'])],['x_purpose','=',3]])
+
+for file in env['dc.x_dc_dar'].search([['id','=',int(record['x_name'])]])[0]['x_12m_attach']:
+    file['x_new_doc'] = False
+    file['x_last_doc'] = False
+if record['x_url'] != False and record['x_url'][0:4] == 'http':
+    for f in env['x_dc_master_list'].search([['x_name','=',env['x_dc_dar'].search([['id','=',int(record['x_name'])]])[0]['x_doc_id']]]):
+        f.write({'x_new_doc':False})
+    env['dc.x_dc_master_list'].create({'x_attach_url':record['x_url'],'x_m21_dc_dar':int(record['x_name']),'x_doc_file_old':[(6,0,at_id)],'x_clip':[(6,0,att_id)],'x_remark':record['x_remark'],'x_new_doc':True,'x_last_doc':True})
+elif record['x_url'] != False and record['x_url'][0:4] != 'http':
+    raise Warning('กรุณาตรวจสอบ url')
+elif len(p)>0 :
+    env['x_dc_master_list'].create({'x_m21_dc_dar':int(record['x_name']),'x_doc_file_old':[(6,0,at_id)],'x_clip':[(6,0,att_id)],'x_remark':record['x_remark'],'x_wait_cancel_doc':True,'x_last_doc':True})
+else:
+    for f in env['dc.x_dc_master_list'].search([['x_name','=',env['x_dc_dar'].search([['id','=',int(record['x_name'])]])[0]['x_doc_id']]]):
+        f.write({'x_new_doc':False})
+    env['dc.x_dc_master_list'].create({'x_m21_dc_dar':int(record['x_name']),'x_doc_file_old':[(6,0,at_id)],'x_clip':[(6,0,att_id)],'x_remark':record['x_remark'],'x_new_doc':True,'x_last_doc':True})
+            </field>
+        </record>
+
+
+        <record model="ir.actions.server" id="dc.action_server_737">
+            <field name="name">[DC]save cancel</field>
+            <field name="model_id" ref="model_dc_x_dc_wizard_cancel_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+id_record = int(record['x_name'])
+env['dc.x_dc_dar'].search([['id','=',id_record]]).write({'x_status_dar':6,'x_cancel_reason':record['x_cancel_reason']})
+env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',id_record]]).write({'x_cancel_doc':True,'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_old_doc':False,'x_end_doc':True})
+            </field>
+        </record>
+
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="demo.x_demo_odoo_form_user">
+            <field name="name">x_demo_odoo_form_user</field>
+            <field name="model">demo.x_demo_odoo</field>
+            <field name="inherit_id" ref="demo.x_demo_odoo_form"/>
+            <field name="groups_id" eval="[(4,ref('base.group_system'))]"/>
+            <field name="arch" type="xml">
+                <xpath position="attributes" expr="//field[@name='x_products']">
+                    <attribute name="options">{'color_field': 'x_color'}</attribute>
+                </xpath>
+                <xpath position="attributes" expr="//field[@name='x_title']">
+                    <attribute name="options">{}</attribute>
+                </xpath>
+
+            </field>
+
+        </record>
+
+    </data>
+</odoo>

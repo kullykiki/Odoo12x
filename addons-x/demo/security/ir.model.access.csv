@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_admin_x_demo_odoo,demo.x_demo_odoo,model_demo_x_demo_odoo,demo.admin,1,1,1,1
+access_admin_x_demo_contact,demo.x_demo_contact,model_demo_x_demo_contact,demo.admin,1,1,1,1
+access_admin_x_master_title_company,demo.x_master_title_company,model_demo_x_master_title_company,demo.admin,1,1,1,1
+access_admin_x_master_products,demo.x_master_products,model_demo_x_master_products,demo.admin,1,1,1,1
+access_user_x_demo_odoo,demo.x_demo_odoo,model_demo_x_demo_odoo,demo.user,1,1,1,1
+access_user_x_demo_contact,demo.x_demo_contact,model_demo_x_demo_contact,demo.user,1,1,1,1
+access_user_x_master_title_company,demo.x_master_title_company,model_demo_x_master_title_company,demo.user,1,1,1,1
+access_user_x_master_products,demo.x_master_products,model_demo_x_master_products,demo.user,1,1,1,1

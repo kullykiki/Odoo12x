@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dc_x_dc_dar,Admin / DC,model_dc_x_dc_dar,base.group_system,1,1,1,1
+access_dc_x_dc_master_list,dc.x_dc_master_list,model_dc_x_dc_master_list,base.group_system,1,1,1,1
+access_dc_x_master_dc_doc_type,dc.x_master_dc_doc_type,model_dc_x_master_dc_doc_type,base.group_system,1,1,1,1
+access_dc_x_master_dc_purpose,dc.x_master_dc_purpose,model_dc_x_master_dc_purpose,base.group_system,1,1,1,1
+access_dc_x_master_dc_status,dc.x_master_dc_status,model_dc_x_master_dc_status,base.group_system,1,1,1,1

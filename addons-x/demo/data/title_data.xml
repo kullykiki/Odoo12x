@@ -1,0 +1,17 @@
+<odoo>
+    <data noupdate="1">
+        <!-- ถ้าไม่ใส่ demo. ไว้ มันจะใส่ให้ auto ใน external id -->
+          <record id="demo.bjk" model="demo.x_master_title_company">
+            <field name="x_name">บจก.</field>
+          </record>
+
+          <record id="demo.bjm" model="demo.x_master_title_company">
+            <field name="x_name">บมจ.</field>
+          </record>
+
+          <record id="demo.hjk" model="demo.x_master_title_company">
+            <field name="x_name">หจก.</field>
+          </record>
+       
+    </data>
+</odoo>

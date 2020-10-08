@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+          <!-- 648 Delete Tags 30 days Auto -->
+        <record model="ir.actions.server" id="dc.action_server_648">
+            <field name="name">[DC][MasterList] Delete Tags 30 days Auto</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+            <field name="execution_mode">synchronous</field>
+            <field name="state">code</field>
+            <field name="code">
+tn = datetime.datetime.now()
+offset = datetime.timedelta(days=30)
+tn = tn - offset
+tn_end = "{:04d}-{:02d}-{:02d} 23:59:59".format(tn.year,tn.month,tn.day)
+for dc in env['dc.x_dc_master_list'].search([['create_date','&lt;=',tn_end],['x_new_doc','=',True]]):
+  dc.write({'x_new_doc': False })
+            </field>
+        </record>
+	<!-- end 648 Delete Tags 30 days Auto -->
+
+  <!-- 652 Auto Tags เอกสารล่าสุด -->
+        <record model="ir.actions.server" id="dc.action_server_652">
+          <field name="name">[DC][MasterList] Delete Tags 30 days Auto</field>
+          <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+          <field name="execution_mode">synchronous</field>
+          <field name="state">code</field>
+          <field name="code">
+tn = datetime.datetime.now()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&gt;=',tn_odoo]]):
+  if file['x_new_doc'] == True:
+    file.write({'x_last_doc': True})
+  else:
+    file.write({'x_last_doc': False})
+          </field>
+        </record>
+  <!-- end 652 Auto Tags เอกสารล่าสุด -->	
+
+
+  <!-- 683 Auto Tags เอกสารกำลังใช้งาน -->
+        <record model="ir.actions.server" id="dc.action_server_683">
+            <field name="name">[DC][MasterList] Auto Tags เอกสารกำลังใช้งาน</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+            <field name="execution_mode">synchronous</field>
+            <field name="state">code</field>
+            <field name="code">
+tn = datetime.datetime.now()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+for f in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo],['x_new_doc','=',False]]):
+  f.write({'x_last_doc':False})
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo]]):
+  if file['x_last_doc'] == True:
+    file.write({'x_use_doc': True })
+  else:
+    file.write({'x_use_doc': False })
+    file.write({'x_old_doc': True })
+  old_file = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']]])
+  old_file = old_file[:-1]
+  for of in old_file:
+    if of['x_end_doc'] == False:
+      of.write({'x_old_doc':True,'x_new_doc':False,'x_last_doc':False})
+  end_file = env['x_dc_master_list'].search([['x_name','=',file['x_name']]])
+  end_file = end_file[:-2]
+  for ef in end_file:
+    ef.write({'x_end_doc':True,'x_old_doc':False})
+  cancel = env['dc.x_dc_master_list'].search(['|',['x_ref_purpose','=',3],['x_end_doc','=',True]])
+  cancel.write({'x_old_doc':False})
+            </field>
+        </record>
+  <!-- end 683 Auto Tags เอกสารกำลังใช้งาน -->
+
+    <!-- 684 Auto ยกเลิกเอกสาร -->
+        <record model="ir.actions.server" id="dc.action_server_684">
+            <field name="name">[DC] Auto ยกเลิกเอกสาร</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+            <field name="state">code</field>
+            <field name="execution_mode">synchronous</field>
+            <field name="code">
+tn = datetime.date.today()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo],['x_ref_purpose','=',3]]):
+  file.write({'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_cancel_doc':True,'x_old_doc':False,'x_wait_cancel_doc':False})
+  old_file = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']],['x_ref_purpose','!=',3]])
+  for of in old_file:
+      of.write({'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_cancel_doc':False,'x_old_doc':False,'x_wait_cancel_doc':False,'x_end_doc':True})
+            </field>
+        </record>
+  <!-- end 684 Auto ยกเลิกเอกสาร -->
+
+
+  <!-- 700 Web Open page 2 -->
+        <record model="ir.actions.server" id="dc.action_server_700">
+            <field name="name">[DC][Web] Open page 2</field>
+            <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+            <field name="execution_mode">synchronous</field>
+            <field name="state">code</field>
+            <field name="code">
+action= {   
+            'name': 'หน้าสำหรับ QA',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#id=&amp;action=699&amp;model=x_dc_dar&amp;view_type=form&amp;menu_id=578'
+            
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+    useless_file.sudo().unlink()
+            </field>
+        </record>
+	<!-- end 700 Web Open page 2 -->
+
+      <!-- 701 Web Open cancel doc -->
+      <record model="ir.actions.server" id="dc.action_server_701">
+          <field name="name">[DC][Web] Open cancel doc</field>
+          <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+          <field name="execution_mode">synchronous</field>
+          <field name="state">code</field>
+          <field name="code">
+action= {   
+            'name': 'เอกสารยกเลิก',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=690&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()
+          </field>
+      </record>
+  <!-- end 701 Web Open cancel doc -->
+
+
+  <!-- 702 Web Open new doc -->
+    <record model="ir.actions.server" id="dc.action_server_702">
+        <field name="name">[DC][Web] Open new doc</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': 'เอกสารใหม่',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=689&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'  
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()          
+        </field>
+    </record>
+  <!-- end 702 Web Open new doc -->
+
+
+  <!-- 703 Web Open New Doc -->
+    <record model="ir.actions.server" id="dc.action_server_703">
+        <field name="name">[DC][Web] Open All DC</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': 'เอกสารทั้งหมด',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=711&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()       
+        </field>
+    </record>
+  <!-- end 703 Web Open New Doc -->
+
+  <!-- 707 Open DAR -->
+    <record model="ir.actions.server" id="dc.action_server_707">
+        <field name="name">[DC][Web] Open DAR</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': 'DAR. No',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#id=&amp;action=743&amp;model=x_dc_dar&amp;view_type=form&amp;menu_id=578'
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()
+        </field>
+    </record>
+  <!-- end 707 Open DAR -->
+
+
+  <!-- 710 Auto Tags เอกสารสิ้นสุด -->
+    <record model="ir.actions.server" id="dc.action_server_710">
+        <field name="name">[DC][MasterList] Auto Tags เอกสารสิ้นสุด</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+tn = datetime.datetime.now()
+tn_odoo = "{:02d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+i=0
+for file in env['dc.x_dc_master_list'].search([['x_publish_date','&lt;=',tn_odoo]]):
+  x = env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']],['x_old_doc','=',True]])
+  for y in env['dc.x_dc_master_list'].search([['x_name','=',file['x_name']],['x_old_doc','=',True]]):
+  
+    if i &lt; len(x)-1:
+        y.write({'x_end_doc': True })
+        y.write({'x_old_doc': False })
+        y.write({'x_new_doc': False })
+        y.write({'x_last_doc': False })
+        y.write({'x_use_doc': False })  
+    i = i+1  
+        </field>
+    </record>
+  <!-- end 710 Auto Tags เอกสารสิ้นสุด -->
+    
+<!-- 712 เฉพาะหน่วยงานของท่าน -->
+    <record model="ir.actions.server" id="dc.action_server_712">
+        <field name="name">[Document Master List] เฉพาะหน่วยงานของท่าน</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+domains="[]"
+user_id = env.user.id
+user_email = env.user.email
+
+user_dept = env['hr.employee'].sudo().search([['work_email','=',user_email]])
+if len(user_dept) > 0:
+  user_dept_id  = user_dept[0]['department_id']['name']
+  domains="[['x_dept','=','{}'],['x_use_doc','=',True]]".format(user_dept_id)
+
+
+action = {
+          "name" : "งานที่ท่านรับผิดชอบ",
+          "type": "ir.actions.act_window",
+          "view_type" : "form",
+          "view_mode": "tree,form",
+          'views':[[901,'tree'],[830,'form']],
+          "res_model": "x_dc_master_list",
+          "target" : 'current',
+          "context": {'group_by':['x_dept','x_ref_doc_type']} ,
+          "domain": domains 
+        }
+
+        </field>
+    </record>
+  <!-- end 712 เฉพาะหน่วยงานของท่าน -->
+
+
+  <!-- 718 web งานที่ท่านรับผิดชอบ -->
+    <record model="ir.actions.server" id="dc.action_server_718">
+        <field name="name">[DC] web งานที่ท่านรับผิดชอบ</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': '[DC] งานที่ท่านรับผิดชอบ',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=712&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+            
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+    useless_file.sudo().unlink()
+        </field>
+    </record>
+  <!-- end 718 web งานที่ท่านรับผิดชอบ -->
+
+    <!-- 739 เอกสารยกเลิก เฉพาะหน่วยงานของท่าน -->
+    <record model="ir.actions.server" id="dc.action_server_739">
+        <field name="name">[Document Master List] เอกสารยกเลิก - เฉพาะหน่วยงานของท่าน</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+domains="[]"
+user_id = env.user.id
+user_email = env.user.email
+
+user_dept = env['hr.employee'].sudo().search([['work_email','=',user_email]])
+if len(user_dept) > 0:
+  user_dept_id  = user_dept[0]['department_id']['name']
+  domains="[['x_m21_dc_dar.x_status_dar.id','=',5],'|',['x_wait_cancel_doc','=',True],['x_cancel_doc','=',True],'|',['x_dept','=','{}'],['x_ref_privacy','=',2]]".format(user_dept_id)
+
+action = {
+          "name" : "เอกสารยกเลิก",
+          "type": "ir.actions.act_window",
+          "view_type" : "form",
+          "view_mode": "tree,form",
+          'views':[[895,'tree'],[830,'form']],
+          "res_model": "x_dc_master_list",
+          "target" : 'current',
+          "context": {'group_by':['x_dept','x_ref_doc_type']} ,
+          "domain": domains 
+        }
+
+        </field>
+    </record>
+  <!-- end 739 เอกสารยกเลิก เฉพาะหน่วยงานของท่าน -->
+
+
+  <!-- 740 เอกสารใหม่ เฉพาะหน่วยงานของท่าน -->
+    <record model="ir.actions.server" id="dc.action_server_740">
+        <field name="name">[Document Master List] เอกสารใหม่-เฉพาะหน่วยงานของท่าน</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+domains="[]"
+user_id = env.user.id
+user_email = env.user.email
+user_dept = env['hr.employee'].sudo().search([['work_email','=',user_email]])
+if len(user_dept) > 0:
+  user_dept_id  = user_dept[0]['department_id']['name']
+  domains="['|',['x_ref_privacy','=',2],['x_dept','=','{}'],['x_new_doc','=',True],['x_m21_dc_dar.x_status_dar.id','=',5]]".format(user_dept_id)
+
+action = {
+          "name" : "เอกสารใหม่",
+          "type": "ir.actions.act_window",
+          "view_type" : "form",
+          "view_mode": "tree,form",
+          'views':[[901,'tree'],[830,'form']],
+          "res_model": "x_dc_master_list",
+          "target" : 'current',
+          "context": {'group_by':['x_dept','x_ref_doc_type']} ,
+          "domain": domains 
+        }
+        </field>
+    </record>
+  <!-- end 740 เอกสารใหม่ เฉพาะหน่วยงานของท่าน -->
+
+
+  <!-- 741 Web เอกสารยกเลิก เฉพาะหน่วยงานของท่าน -->
+    <record model="ir.actions.server" id="dc.action_server_741">
+        <field name="name">[Document Master List][Web] เอกสารยกเลิก - เฉพาะหน่วยงานของท่าน</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': 'เอกสารยกเลิก',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=739&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'   
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()
+        </field>
+    </record>
+  <!-- end 741 Web เอกสารยกเลิก เฉพาะหน่วยงานของท่าน -->
+
+
+  <!-- 742 Web งานเอกสารใหม่ -->
+    <record model="ir.actions.server" id="dc.action_server_742">
+        <field name="name">[DC] web งานเอกสารใหม่</field>
+        <field name="model_id" ref="model_dc_x_dc_master_list"></field>
+        <field name="execution_mode">synchronous</field>
+        <field name="state">code</field>
+        <field name="code">
+action= {   
+            'name': '[DC] เอกสารใหม่',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=740&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+       }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+  useless_file.sudo().unlink()
+        </field>
+    </record>
+  <!-- end 742 Web งานเอกสารใหม่  -->
+    </data>
+
+</odoo>

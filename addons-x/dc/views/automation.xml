@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+         <!-- automate action to the one above -->
+    
+        <record model="base.automation" id="dc.automation_server_23">
+            <field name="name">[DC / Auto] ข้อมูลเอกสารเดิม</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="active">True</field>
+            <field name="trigger">on_change</field>
+            <field name="on_change_fields">x_old_doc</field>
+            <field name="code">
+                if record['x_old_doc'] != False  :
+                    record['x_doc_id'] = record['x_old_doc']['x_name']
+                    record['x_doc_name'] = record['x_old_doc']['x_doc_name']
+                    record['x_revise_no'] = record['x_old_doc']['x_revise_no']
+                    record['x_start_date'] = record['x_old_doc']['x_publish_date']
+            </field>
+        </record>
+   
+    </data>
+</odoo>

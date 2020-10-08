@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <!-- Create Category -->
+        <record id="dc_group" model="ir.module.category">
+            <field name="name">DC</field>
+        </record>
+
+
+        <!--  Create Group -->
+        <record id="dc.qa" model="res.groups">
+            <field name="name">QA</field>
+            <field name="category_id" ref="dc_group" />
+        </record>
+
+
+    </data>
+
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <!-- <template id="listing"> -->
+        <!--   <ul> -->
+        <!--     <li t-foreach="objects" t-as="object"> -->
+        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
+        <!--         <t t-esc="object.display_name"/> -->
+        <!--       </a> -->
+        <!--     </li> -->
+        <!--   </ul> -->
+        <!-- </template> -->
+        <template id="export_xml">
+           <!-- <h1><t t-esc="object.display_name"/></h1>  -->
+           <dl> 
+             <t t-foreach="object" t-as="o"> 
+               <dt><t t-esc="o.x_fund_employee_id"/></dt> 
+               <dd><t t-esc="o.x_fund_employee.name"/></dd> 
+             </t> 
+           </dl> 
+         </template> 
+    </data>
+</odoo>

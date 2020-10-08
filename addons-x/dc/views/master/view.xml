@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+
+        <record id="dc.x_master_dc_status_form" model="ir.ui.view">
+            <field name="name">x_master_dc_doc_type_form</field>
+            <field name="model">dc.x_master_dc_status</field>
+            <field name="arch_base" type="xml">
+                <form string="DC Status Master">
+                    <sheet>
+                        <link href="https://fonts.googleapis.com/css?family=Roboto|Taviraj" rel="stylesheet" />
+                        <style>
+                        .o_form_sheet{
+                            font-family: 'Taviraj', 'Roboto', sans-serif;
+                        }
+                        </style>
+                        <label for="x_name" string="สถานะเอกสาร (DAR)" style="font-size:23px; font-weight:bold;"/><br/>
+                        <hr style="border-bottom:1px solid #ccc"/>
+                        <group>
+                            <group>
+                                <field name="x_name" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="dc.x_master_dc_purpose_form" model="ir.ui.view">
+            <field name="name">x_master_dc_purpose_form</field>
+            <field name="model">dc.x_master_dc_purpose</field>
+            <field name="arch_base" type="xml">
+                <form string="DC Purpose Master">
+                    <sheet>
+                        <link href="https://fonts.googleapis.com/css?family=Roboto|Taviraj" rel="stylesheet" />
+                        <style>
+                        .o_form_sheet{
+                            font-family: 'Taviraj', 'Roboto', sans-serif;
+                        }
+                        </style>
+                        <label for="x_name" string="วัตถุประสงค์ยื่นคำร้อง" style="font-size:23px; font-weight:bold;"/><br/>
+                        <hr style="border-bottom:1px solid #ccc"/>
+                        <group>
+                            <group>
+                                <field name="x_name" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="dc.x_master_dc_doc_type_form" model="ir.ui.view">
+            <field name="name">x_master_dc_doc_type_form</field>
+            <field name="model">dc.x_master_dc_doc_type</field>
+            <field name="arch_base" type="xml">
+                <form string="Document Type Master">
+                    <sheet>
+                        <link href="https://fonts.googleapis.com/css?family=Roboto|Taviraj" rel="stylesheet" />
+                        <style>
+                        .o_form_sheet{
+                            font-family: 'Taviraj', 'Roboto', sans-serif;
+                        }
+                        </style>
+                        <label for="x_name" string="ประเภทเอกสาร" style="font-size:23px; font-weight:bold;"/><br/>
+                        <hr style="border-bottom:1px solid #ccc"/>
+                        <group>
+                            <group>
+                                <field name="x_name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+
+
+    </data>
+
+</odoo>

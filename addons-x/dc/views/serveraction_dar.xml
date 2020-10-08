@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="dc.action_server_744">
+            <field name="name">(DAR) web งานที่ท่านรับผิดชอบ</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+action= {   
+            'name': '[DAR] งานที่ท่านรับผิดชอบ',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=743&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+    }
+for useless_file in env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',False],['create_date','!=',False]]):
+    useless_file.sudo().unlink()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_743">
+            <field name="name">(DAR) เฉพาะหน่วยงานของท่าน</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+domains="[]"
+user_id = env.user.id
+user_email = env.user.email
+
+user_dept = env['hr.employee'].sudo().search([['work_email','=',user_email]])
+if len(user_dept) > 0:
+    user_dept_id  = user_dept[0]['department_id']['name']
+    domains="[['x_dept','=','{}'],['x_status_dar','!=',6]]".format(user_dept_id)
+
+
+action = {
+    "name" : "แจ้งขอดำเนินการเอกสาร (DAR For User)",
+    "type": "ir.actions.act_window",
+    "view_type" : "form",
+    "view_mode": "tree,form",
+    "res_model": "dc.x_dc_dar",
+    "target" : 'current',
+    "context": {'default_x_status_dar':1,'default_create_uid':uid, 'group_by': ['x_status_dar']} ,
+    "domain": domains 
+    }
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_651">
+            <field name="name">(DAR)ยกเลิก</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+record['x_status_dar'] = 6
+env['dc.x_dc_master_list'].search([['x_m21_dc_dar','=',record['x_name']]]).write({'x_cancel_doc':True,'x_new_doc':False,'x_use_doc':False,'x_last_doc':False,'x_old_doc':False,'x_end_doc':True})
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_650">
+            <field name="name">(DAR)เผยแพร่เอกสาร</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+record['x_status_dar'] = 5
+tn = datetime.date.today()
+tn_now = "{:04d}-{:02d}-{:02d}".format(tn.year,tn.month,tn.day)
+record['x_publish_date'] = tn_now
+#send mail
+env['mail.template'].browse(31).send_mail(record.id)      
+            </field>
+        </record>
+        
+        <record model="ir.actions.server" id="dc.action_server_649">
+            <field name="name">(DAR)แจ้งขอดำเนินการ</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+record['x_status_dar'] = 3
+
+if record['x_attach'] == 'y':
+    if len(record['x_12m_attach']) &lt;= 0:
+        raise Warning(
+        "กรุณาแนบไฟล์เอกสาร"
+        )
+if record['x_purpose']['id'] == 3:
+    if len(record['x_12m_attach']) &lt;= 0:
+        raise Warning(
+        "กรุณาแนบไฟล์เอกสาร"
+        )
+#send email
+env['mail.template'].browse(30).send_mail(record.id)
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_695">
+            <field name="name">[DAR] [Wizard] แก้ไข</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+context_id = "{}".format(record['id'])
+action= {
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': 835,
+            'res_model': 'dc.x_dc_wizard_edit',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': { 'default_x_name': context_id },
+            'flags': {'form': {'action_buttons': True, 'options': {'mode': 'edit'}}},
+        }      
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_692">
+            <field name="name">[DAR] popup</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+context_id = "{}".format(record['id'])
+action= {
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': 903,
+            'res_model': 'dc.x_dc_wizard_attach_file',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': { 'default_x_name': context_id },
+        }
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_611">
+            <field name="name">[DC][W] Pop-up หน้าเผยแพร่ในระบบ DC</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+context_id = "{}".format(record['id'])
+action= {
+            'name': 'กำหนดการเผยแพร่ในระบบ DC',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': 832,
+            'res_model': 'dc.x_dc_wizard_publish_date',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': { 'default_x_name': context_id },
+        }
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_736">
+            <field name="name">[DC][W]popup cancel</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+context_id = "{}".format(record['id'])
+action= {
+            'name': 'ยกเลิกใบDAR',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': 834,
+            'res_model': 'dc.dc.x_dc_wizard_cancel_dar',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': { 'default_x_name': context_id },
+        }
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_704">
+            <field name="name">[DC][Web] QA DAR Report</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+action= {   
+            'name': 'ทะเบียนใบขอดำเนินการ',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=696&amp;model=x_dc_dar&amp;view_type=list&amp;menu_id=578'
+    }
+for useless_file in env['dc.x_dc_dar'].search([['x_purpose','=',False],['create_date','!=',False]]):
+    useless_file.sudo().unlink()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="dc.action_server_705">
+            <field name="name">[DC][Web] QA Document History</field>
+            <field name="model_id" ref="model_dc_x_dc_dar"/>
+            <field name="state">code</field>
+            <field name="code">
+action= {   
+            'name': 'ประวัติเอกสาร',
+            'res_model': 'ir.actions.act_url',
+            'type'     : 'ir.actions.act_url',
+            'target'   : 'self',
+            'url'      : 'https://devbb-12.jasfone.com/web#action=688&amp;model=x_dc_master_list&amp;view_type=list&amp;menu_id=578'
+    }
+for useless_file in env['dc.x_dc_dar'].search([['x_purpose','=',False],['create_date','!=',False]]):
+    useless_file.sudo().unlink()
+            </field>
+        </record>
+
+    </data>
+</odoo>
