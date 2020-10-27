@@ -1,2 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_tiny_stock_tiny_stock,tiny_stock.tiny_stock,model_tiny_stock_tiny_stock,,1,0,0,0
+access_tiny_stock_inventory,tiny_stock.inventory,model_tiny_stock_inventory,,1,1,1,1
+access_tiny_stock_deposition,tiny_stock.deposition,model_tiny_stock_deposition,,1,1,1,1
+access_tiny_stock_requistion,tiny_stock.requistion,model_tiny_stock_requistion,,1,1,1,1
+access_tiny_stock_stock,tiny_stock.stock,model_tiny_stock_stock,,1,1,1,1
+access_tiny_stock_m_item,tiny_stock.m_item,model_tiny_stock_m_item,,1,1,1,1
+

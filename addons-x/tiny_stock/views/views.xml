@@ -1,28 +1,263 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="tiny_stock.list">
-      <field name="name">tiny_stock list</field>
-      <field name="model">tiny_stock.tiny_stock</field>
+    
+    <record model="ir.ui.view" id="tiny_stock.inventory_form">
+      <field name="name">Inventory Form</field>
+      <field name="model">tiny_stock.inventory</field>
       <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
+        <form>
+          <sheet>
+            
+            <label for="title" string="Inventory" style="font-size:23px; font-weight:bold;"/>
+            
+            <div class="oe_button_box" name="button_box">
+              <button 
+                      name="add_stock" 
+                      type="object" 
+                      class="oe_stat_button" 
+                      icon="fa-archive">
+                Add Stock
+              </button>
+              <button 
+                      name="reduce_stock" 
+                      type="object" 
+                      class="oe_stat_button" 
+                      icon="fa-archive">
+                Reduce Stock
+              </button>
+            </div>
+
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+              
+            <group colspan="2">
+              <field name="name"/>
+              <field name="type_doc"/>
+              <field name="deposit_id" attrs="{'invisible': [('type_doc','!=','requistion')]}"/>
+            </group>
+
+            <notebook>
+
+
+              <page string = "ฝาก"
+                    attrs="{'invisible': [('type_doc','!=','deposition')]}">
+                
+                <group  string="วัสดุสำนักงานสิ้นเปลือง"  
+                        colspan="4">
+                  <field name="b_d_office_supplies" colspan="2"/>
+                  <newline />
+                  <field  name="d_office_supplies_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('b_d_office_supplies','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
+                        colspan="4">
+                  <field name="b_d_oracle_code_item" colspan="2" />
+                  <newline />
+                  <field  name="d_oracle_code_item_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('b_d_oracle_code_item','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+
+              </page>
+
+              <page string = "เบิก"
+                    attrs="{'invisible': [('type_doc','!=','requistion')]}">
+                
+                <group  string="วัสดุสำนักงานสิ้นเปลือง"  
+                        colspan="4">
+                  <field name="b_r_office_supplies" colspan="2"/>
+                  <newline />
+                  <field  name="r_office_supplies_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
+                        colspan="4">
+                  <field name="b_r_oracle_code_item" colspan="2" />
+                  <newline />
+                  <field  name="r_oracle_code_item_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+
+              </page>
+
+              <page string = "คลัง">
+                
+                <group  string="วัสดุสำนักงานสิ้นเปลือง"  
+                        colspan="4">
+
+                  <field  name="s_office_supplies_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          />
+
+                </group>
+
+                <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
+                        colspan="4">
+ 
+                  <field  name="s_oracle_code_item_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          />
+                    
+                </group>
+
+              </page>
+
+
+
+              <page string="ประวัติการเบิก" >
+                <group colspan="4" string="ประวัติการเบิก">
+                  <field name="history_requistion" colspan="4" nolabel="1" />
+                </group>
+              </page>
+
+              <!-- <page string = "คลัง">
+                <group string="Stock"  colspan="4">
+                  <field name="stock_item" colspan="4" nolabel="1">
+                    <tree>
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+              </page>
+              <page string = "เบิก">
+                <group string="Require"  colspan="4">
+                  <field name="deposit_id" colspan="2" />
+                  <newline />
+                  <field name="required_item" colspan="4" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="stock_id" />
+                        <field name="item" />
+                        <field name="qty" />
+                        <field name="unit" />
+                    </tree>
+                  </field>
+                </group>
+              </page>
+
+              <page attrs="{'invisible': [('type_doc','!=','deposition')]}" string="ประวัติการเบิก" >
+                <group string="Requistion"  colspan="4">
+                  <field name="required_list" colspan="4" nolabel="1">
+                  </field>
+                </group>
+              </page>-->
+            </notebook> 
+            
+
+          </sheet>
+        </form>
       </field>
     </record>
-    -->
+   
+
+   <!-- Stock tree view -->
+   <record id="stock_view_tree" model="ir.ui.view">
+     <field name="name">tiny_stock.stock.view.tree</field>
+     <field name="model">tiny_stock.stock</field>
+     <field name="arch" type="xml">
+       <tree>
+          <field name="deposit_id"/>
+          <field name="request_id"/>
+          <field name="type_item"/>
+          <field name="item" />
+          <field name="qty" />
+          <field name="unit" />
+       </tree>
+     </field>
+   </record>
+
+   <!-- Requistion tree view -->
+   <record id="requistion_view_tree" model="ir.ui.view">
+     <field name="name">requistion.view.tree</field>
+     <field name="model">tiny_stock.requistion</field>
+     <field name="arch" type="xml">
+       <tree>
+          <field name="stock_id"/>
+          <field name="type_item"/>
+          <field name="item" />
+          <field name="qty" />
+          <field name="unit" />
+       </tree>
+     </field>
+   </record>
+
+   <!-- [M] Item tree view -->
+   <record id="m_item_view_tree" model="ir.ui.view">
+     <field name="name">m_item.view.tree</field>
+     <field name="model">tiny_stock.m_item</field>
+     <field name="arch" type="xml">
+       <tree>
+          <field name="item_type" />
+          <field name="item_name" />
+          <field name="item_oci_code" />
+          <field name="item_unit" />
+       </tree>
+     </field>
+   </record>
 
     <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="tiny_stock.action_window">
-      <field name="name">tiny_stock window</field>
-      <field name="res_model">tiny_stock.tiny_stock</field>
+    
+    <record model="ir.actions.act_window" id="tiny_stock.action_window_inventory">
+      <field name="name">Inventory window</field>
+      <field name="res_model">tiny_stock.inventory</field>
       <field name="view_mode">tree,form</field>
     </record>
-    -->
+
+    <record model="ir.actions.act_window" id="tiny_stock.action_window_stock">
+      <field name="name">Stock window</field>
+      <field name="res_model">tiny_stock.stock</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="tiny_stock.action_window_requistion">
+      <field name="name">Requistion window</field>
+      <field name="res_model">tiny_stock.requistion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="tiny_stock.action_window_m_item">
+      <field name="name">Item window</field>
+      <field name="res_model">tiny_stock.m_item</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+   
 
     <!-- server action to the one above -->
     <!--
@@ -41,20 +276,43 @@
     -->
 
     <!-- Top menu item -->
-    <!--
-    <menuitem name="tiny_stock" id="tiny_stock.menu_root"/>
-    -->
+    
+    <menuitem name="Tiny Stock" id="tiny_stock.menu_root"/>
+   
     <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="tiny_stock.menu_1" parent="tiny_stock.menu_root"/>
-    <menuitem name="Menu 2" id="tiny_stock.menu_2" parent="tiny_stock.menu_root"/>
-    -->
+    
+    <menuitem name="Deposit" 
+              id="tiny_stock.deposit_menu" 
+              parent="tiny_stock.menu_root"
+              action="tiny_stock.action_window_inventory"/>
+    <!-- <menuitem name="Menu 2" id="tiny_stock.menu_2" parent="tiny_stock.menu_root"/> -->
+   
     <!-- actions -->
-    <!--
-    <menuitem name="List" id="tiny_stock.menu_1_list" parent="tiny_stock.menu_1"
-              action="tiny_stock.action_window"/>
-    <menuitem name="Server to list" id="tiny_stock" parent="tiny_stock.menu_2"
-              action="tiny_stock.action_server"/>
-    -->
+    
+    <menuitem name="Stock" 
+              id="tiny_stock.stock_menu" 
+              parent="tiny_stock.menu_root"
+              action="tiny_stock.action_window_stock"
+             />
+
+    <menuitem name="Request" 
+              id="tiny_stock.request_menu" 
+              parent="tiny_stock.menu_root"
+              action="tiny_stock.action_window_requistion"
+             />
+
+    <menuitem name="Configuration" 
+              id="tiny_stock.configuration_menu" 
+              parent="tiny_stock.menu_root"
+             />
+
+    <menuitem name="[M] Item" 
+              id="tiny_stock.m_item_menu" 
+              parent="tiny_stock.configuration_menu"
+              action="tiny_stock.action_window_m_item"
+             />
+    <!-- <menuitem name="Server to list" id="tiny_stock" parent="tiny_stock.menu_2"
+              action="tiny_stock.action_server"/> -->
+   
   </data>
 </odoo>
