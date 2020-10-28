@@ -4,4 +4,5 @@ access_tiny_stock_deposition,tiny_stock.deposition,model_tiny_stock_deposition,,
 access_tiny_stock_requistion,tiny_stock.requistion,model_tiny_stock_requistion,,1,1,1,1
 access_tiny_stock_stock,tiny_stock.stock,model_tiny_stock_stock,,1,1,1,1
 access_tiny_stock_m_item,tiny_stock.m_item,model_tiny_stock_m_item,,1,1,1,1
+access_tiny_stock_history,tiny_stock.history,model_tiny_stock_history,,1,1,1,1
 
