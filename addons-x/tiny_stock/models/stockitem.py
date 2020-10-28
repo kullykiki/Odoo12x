@@ -19,9 +19,6 @@ class Stock(models.Model):
     # จากรายการฝากอันไหน ได้แสดงยอดของคงเหลือ เวลาฝากได้ จากการค้นหา เลขที่ แล้วคอมพิวไปใส่ stock
     deposit_id = fields.Many2one('tiny_stock.inventory','Inventory ID')
     
-    # จากรายการฝากอันไหน ได้แสดงยอดของคงเหลือ เวลาฝากได้ จากการค้นหา เลขที่ แล้วคอมพิวไปใส่ stock
-    request_id = fields.Many2one('tiny_stock.requistion','Requistion ID')
-
     
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()

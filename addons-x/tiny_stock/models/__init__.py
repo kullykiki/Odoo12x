@@ -4,3 +4,4 @@ from . import models
 from . import detailitem
 from . import masteritem
 from . import stockitem
+from . import history

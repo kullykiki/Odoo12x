@@ -87,9 +87,14 @@
                   <field  name="r_office_supplies_list" 
                           colspan="4" 
                           nolabel="1"
+                          context="{
+                              'default_m2o_office_supplies': deposit_id
+                          }"
                           attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
                     <tree editable="bottom">
+                        <field name="m2o_office_supplies" invisible="1" /> 
                         <field name="item" />
+                        <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
                     </tree>
@@ -103,9 +108,14 @@
                   <field  name="r_oracle_code_item_list" 
                           colspan="4" 
                           nolabel="1"
+                          context="{
+                              'default_m2o_oracle_code_item': deposit_id
+                          }"
                           attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
                     <tree editable="bottom">
+                        <field name="m2o_oracle_code_item" invisible="1" /> 
                         <field name="item" />
+                        <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
                     </tree>
@@ -189,12 +199,11 @@
 
    <!-- Stock tree view -->
    <record id="stock_view_tree" model="ir.ui.view">
-     <field name="name">tiny_stock.stock.view.tree</field>
+     <field name="name">stock.view.tree</field>
      <field name="model">tiny_stock.stock</field>
      <field name="arch" type="xml">
        <tree>
           <field name="deposit_id"/>
-          <field name="request_id"/>
           <field name="type_item"/>
           <field name="item" />
           <field name="qty" />
@@ -209,7 +218,6 @@
      <field name="model">tiny_stock.requistion</field>
      <field name="arch" type="xml">
        <tree>
-          <field name="stock_id"/>
           <field name="type_item"/>
           <field name="item" />
           <field name="qty" />
@@ -228,6 +236,22 @@
           <field name="item_name" />
           <field name="item_oci_code" />
           <field name="item_unit" />
+       </tree>
+     </field>
+   </record>
+
+   <!-- History tree view -->
+   <record id="stock_view_tree" model="ir.ui.view">
+     <field name="name">history.view.tree</field>
+     <field name="model">tiny_stock.history</field>
+     <field name="arch" type="xml">
+       <tree>
+          <field name="status_list"/>
+          <field name="type_item"/>
+          <field name="item" />
+          <field name="qty" />
+          <field name="unit" />
+          <field name="main_id" />
        </tree>
      </field>
    </record>
@@ -257,6 +281,12 @@
       <field name="res_model">tiny_stock.m_item</field>
       <field name="view_mode">tree,form</field>
     </record>
+
+    <record model="ir.actions.act_window" id="tiny_stock.action_window_history">
+      <field name="name">History window</field>
+      <field name="res_model">tiny_stock.history</field>
+      <field name="view_mode">tree,form</field>
+    </record>
    
 
     <!-- server action to the one above -->
@@ -277,7 +307,7 @@
 
     <!-- Top menu item -->
     
-    <menuitem name="Tiny Stock" id="tiny_stock.menu_root"/>
+    <menuitem name="Tiny Stock" id="tiny_stock.menu_root" web_icon="tiny_stock,static/description/icon.png" />
    
     <!-- menu categories -->
     
@@ -299,6 +329,12 @@
               id="tiny_stock.request_menu" 
               parent="tiny_stock.menu_root"
               action="tiny_stock.action_window_requistion"
+             />
+    
+    <menuitem name="History" 
+              id="tiny_stock.history_menu" 
+              parent="tiny_stock.menu_root"
+              action="tiny_stock.action_window_history"
              />
 
     <menuitem name="Configuration" 

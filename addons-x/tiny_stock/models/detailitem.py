@@ -53,9 +53,30 @@ class Requistion(models.Model):
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()
     unit = fields.Char('Unit',related='item.item_unit')
-    
-    # เก็บ id ของ record ใน โมเดล stock เอาไว้เวลาตัดใน stock ได้ตัดถูกว่ามาจาก record ไหน
-    stock_id = fields.Many2one('tiny_stock.stock','Stock ID')
+    stock_qty = fields.Integer('สินค้าคงเหลือ',compute="_compute_stock_qty", store=True)
 
 
+    ## วัสดุสำนักงานสิ้นเปลือง
+    ### m2o for o2m วัสดุสำนักงานสิ้นเปลือง
+    m2o_office_supplies = fields.Many2one('tiny_stock.inventory','(o2m) วัสดุสำนักงานสิ้นเปลือง')
 
+    ## อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
+    ### m2o for o2m อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
+    m2o_oracle_code_item = fields.Many2one('tiny_stock.inventory','(o2m) อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
+
+
+    @api.depends('item')
+    def _compute_stock_qty(self):
+        for rec in self:
+            if rec.m2o_office_supplies and rec.item:
+                rec.stock_qty = self.env['tiny_stock.stock'].search([
+                    ('deposit_id','=',rec.m2o_office_supplies.deposit_id.id),
+                    ('item','=',rec.item.id)
+                ],limit=1)['qty']
+                # rec.stock_qty = rec.m2o_office_supplies.deposit_id.id
+            elif rec.m2o_oracle_code_item and rec.item:
+                rec.stock_qty = self.env['tiny_stock.stock'].search([
+                    ('deposit_id','=',rec.m2o_oracle_code_item.deposit_id.id),
+                    ('item','=',rec.item.id)
+                ],limit=1)['qty']
+                    
