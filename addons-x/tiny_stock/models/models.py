@@ -33,8 +33,9 @@ class Inventory(models.Model):
     b_d_oracle_code_item = fields.Boolean('[D] อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
     d_oracle_code_item_list = fields.One2many('tiny_stock.deposition','m2o_oracle_code_item','รายการฝากของ อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
 
-
-    
+    ## ทรัพย์สินชำรุดรอการจำหน่าย
+    b_d_damaged_property = fields.Boolean('[D] ทรัพย์สินชำรุดรอการจำหน่าย')
+    d_damaged_property_list = fields.One2many('tiny_stock.deposition','m2o_damaged_property','รายการฝากของ ทรัพย์สินชำรุดรอการจำหน่าย')
     
     ## CASE: Requistion
     deposit_id = fields.Many2one('tiny_stock.inventory', 'รายการฝากเลขที่')
@@ -47,6 +48,10 @@ class Inventory(models.Model):
     b_r_oracle_code_item = fields.Boolean('[R] อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
     r_oracle_code_item_list = fields.One2many('tiny_stock.requistion','m2o_oracle_code_item','รายการเบิกของ อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
 
+    ### ทรัพย์สินชำรุดรอการจำหน่าย
+    b_r_damaged_property = fields.Boolean('[R] ทรัพย์สินชำรุดรอการจำหน่าย')
+    r_damaged_property_list = fields.One2many('tiny_stock.requistion','m2o_damaged_property','รายการเบิกของ ทรัพย์สินชำรุดรอการจำหน่าย')
+
 
 
     ## STOCK
@@ -56,6 +61,9 @@ class Inventory(models.Model):
     
     ### อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
     s_oracle_code_item_list = fields.Many2many('tiny_stock.stock','s_oci_inventory_x_stock','s_oci_inventory_id','stock_id','รายการของคงเหลือของ อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด', store=True, compute="_compute_stock_item")
+
+    ### ทรัพย์สินชำรุดรอการจำหน่าย
+    s_damaged_property_list = fields.Many2many('tiny_stock.stock','s_dp_inventory_x_stock','s_dp_inventory_id','stock_id','รายการของคงเหลือของ ทรัพย์สินชำรุดรอการจำหน่าย', store=True, compute="_compute_stock_item")
 
     
     
@@ -70,11 +78,14 @@ class Inventory(models.Model):
         for rec in self:
             rec.b_r_office_supplies = True if rec.deposit_id.b_d_office_supplies else False
             rec.b_r_oracle_code_item = True if rec.deposit_id.b_d_oracle_code_item else False
+            rec.b_r_damaged_property = True if rec.deposit_id.b_d_damaged_property else False
             for s_item in self.env['tiny_stock.stock'].search([('deposit_id','=',rec.deposit_id.id)]):
                 if s_item.type_item == 'office_supplies': 
                     rec.s_office_supplies_list = [(4,s_item.id)]
                 elif s_item.type_item == 'oracle_code_item': 
-                    rec.s_oracle_code_item_list = [(4,s_item.id)]                  
+                    rec.s_oracle_code_item_list = [(4,s_item.id)]    
+                elif s_item.type_item == 'damaged_property': 
+                    rec.s_damaged_property_list = [(4,s_item.id)]                 
             # for item in self.env['tiny_stock.stock'].search([('deposit_id','=',rec.deposit_id.id)]):
             #     rec.write({'stock_item':[(4,item.id)]})
     
@@ -83,7 +94,7 @@ class Inventory(models.Model):
         """
         add item to stock.
         """
-        for item in self.env['tiny_stock.deposition'].search(['|',('m2o_office_supplies','=',self.id),('m2o_oracle_code_item','=',self.id)]):
+        for item in self.env['tiny_stock.deposition'].search(['|','|',('m2o_office_supplies','=',self.id),('m2o_oracle_code_item','=',self.id),('m2o_damaged_property','=',self.id)]):
             if item.m2o_office_supplies:
                 self.env['tiny_stock.stock'].create({
                     'type_item':'office_supplies',
@@ -112,6 +123,23 @@ class Inventory(models.Model):
                     'qty':item.qty,
                     'unit':item.unit,
                     'status_list':'deposition'})
+            elif item.m2o_damaged_property :
+                self.env['tiny_stock.stock'].create({
+                    'type_item':'damaged_property',
+                    'deposit_id':item.m2o_damaged_property.id,
+                    'item_dp_name':item.item_dp_name,
+                    'item_dp_tag':item.item_dp_tag,
+                    'item_dp_serial':item.item_dp_serial,
+                    'qty':1
+                    })
+                self.env['tiny_stock.history'].create({
+                    'type_item':'damaged_property',
+                    'main_id':self.id,
+                    'item_dp_name':item.item_dp_name,
+                    'item_dp_tag':item.item_dp_tag,
+                    'item_dp_serial':item.item_dp_serial,
+                    'qty':1,
+                    'status_list':'deposition'})
                 
                
 
@@ -130,6 +158,13 @@ class Inventory(models.Model):
                                         ('deposit_id','=',item.m2o_office_supplies.deposit_id.id),
                                         ('item','=',item.item.id)
                                     ],limit=1)
+                    self.env['tiny_stock.history'].create({
+                    'type_item':'office_supplies',
+                    'main_id':self.id,
+                    'item':item.item.id,
+                    'qty':item.qty,
+                    'unit':item.unit,
+                    'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
         if self.b_r_oracle_code_item:
             for item in self.r_oracle_code_item_list:
@@ -141,13 +176,35 @@ class Inventory(models.Model):
                                         ('deposit_id','=',item.m2o_oracle_code_item.deposit_id.id),
                                         ('item','=',item.item.id)
                                     ],limit=1)
+                    self.env['tiny_stock.history'].create({
+                    'type_item':'oracle_code_item',
+                    'main_id':self.id,
+                    'item':item.item.id,
+                    'qty':item.qty,
+                    'unit':item.unit,
+                    'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
-                    # item.stock_id.qty = item.stock_id.qty - item.qty
+        if self.b_r_damaged_property:
+            for item in self.r_damaged_property_list:
+                if item.qty > item.stock_qty:
+                    strer = "สินค้าไม่พอเบิก {} มีจำนวนสินค้าคงเหลือ : {}\n".format(item.item.item_name,item.stock_qty)
+                    raise ValidationError(strer)
+                elif item.qty <= item.stock_qty:
+                    stock_item = self.env['tiny_stock.stock'].search([
+                                        ('deposit_id','=',item.m2o_damaged_property.deposit_id.id),
+                                        ('item','=',item.item.id)
+                                    ],limit=1)
+                    self.env['tiny_stock.history'].create({
+                    'type_item':'damaged_property',
+                    'main_id':self.id,
+                    'item':item.item.id,
+                    'qty':item.qty,
+                    'unit':item.unit,
+                    'status_list':'requistion'})
+                    stock_item.qty = stock_item.qty - item.qty
+                  
 
-        
-            # stock_id = self.env['tiny_stock.stock'].create({'deposit_id':self.id,'item':item.item.id,'qty':item.qty,'unit':item.unit})
-            # required_id = self.env['tiny_stock.required_item'].create({'stock_id':stock_id.id,'item':item.item.id,'qty':item.qty,'unit':item.unit})
-            # self.write({'required_list':[(4,required_id.id)],'stock_list':[(4,stock_id.id)]})
+
     # @api.model
     # def create(self, vals):
     #     if vals['value2'] > vals['value']:

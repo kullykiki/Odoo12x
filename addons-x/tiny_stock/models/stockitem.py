@@ -14,7 +14,8 @@ class Stock(models.Model):
     # type ของ item ที่จะฝาก
     type_item = fields.Selection([
         ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
-        ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
+        ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด'),
+        ('damaged_property','ทรัพย์สินชำรุดรอการจำหน่าย')
     ])
     # จากรายการฝากอันไหน ได้แสดงยอดของคงเหลือ เวลาฝากได้ จากการค้นหา เลขที่ แล้วคอมพิวไปใส่ stock
     deposit_id = fields.Many2one('tiny_stock.inventory','Inventory ID')
@@ -22,7 +23,9 @@ class Stock(models.Model):
     
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()
-    unit = fields.Char('Unit',related='item.item_unit')   
+    unit = fields.Char('Unit',related='item.item_unit')  
+    item_dp_tag = fields.Char('Item Tag')
+    item_dp_serial = fields.Char('Item Serial') 
 
     @api.multi
     def name_get(self):
@@ -32,6 +35,8 @@ class Stock(models.Model):
                 name = '{} {} {}'.format(stock.item.item_name,stock.qty,stock.unit)
             elif stock.type_item == 'oracle_code_item':
                 name = '{}({}) {} {}'.format(stock.item.item_name,stock.item.item_oci_code,stock.qty,stock.unit)
+            elif stock.type_item == 'damaged_property':
+                name = '{} (T: {} / S: {})'.format(stock.item.item_name,stock.item.item_dp_tag,stock.item.item_dp_serial)
             res.append((stock.id, name))
         return res
 

@@ -75,6 +75,23 @@
                   </field>
                 </group>
 
+                <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
+                        colspan="4">
+                  <field name="b_d_damaged_property" colspan="2" />
+                  <newline />
+                  <field  name="d_damaged_property_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('b_d_damaged_property','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="item_dp_name" />
+                        <field name="item_dp_tag" />
+                        <field name="item_dp_serial" />
+                        
+                    </tree>
+                  </field>
+                </group>
+
               </page>
 
               <page string = "เบิก"
@@ -88,11 +105,13 @@
                           colspan="4" 
                           nolabel="1"
                           context="{
-                              'default_m2o_office_supplies': deposit_id
+                              'default_m2o_office_supplies': deposit_id,
+                              'default_type_item': 'office_supplies'
                           }"
                           attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
                     <tree editable="bottom">
                         <field name="m2o_office_supplies" invisible="1" /> 
+                        <field name="type_item" invisible="1"/>
                         <field name="item" />
                         <field name="stock_qty" />
                         <field name="qty" />
@@ -109,11 +128,13 @@
                           colspan="4" 
                           nolabel="1"
                           context="{
-                              'default_m2o_oracle_code_item': deposit_id
+                              'default_m2o_oracle_code_item': deposit_id,
+                              'default_type_item': 'oracle_code_item'
                           }"
                           attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
                     <tree editable="bottom">
                         <field name="m2o_oracle_code_item" invisible="1" /> 
+                        <field name="type_item" invisible="1"/>
                         <field name="item" />
                         <field name="stock_qty" />
                         <field name="qty" />
@@ -121,6 +142,29 @@
                     </tree>
                   </field>
                 </group>
+
+                <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
+                        colspan="4">
+                  <field name="b_r_damaged_property" colspan="2" />
+                  <newline />
+                  <field  name="r_damaged_property_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          context="{
+                              'default_m2o_damaged_property': deposit_id,
+                              'default_type_item': 'damaged_property'
+                          }"
+                          attrs="{'invisible': [('b_r_damaged_property','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="m2o_damaged_property" invisible="1" /> 
+                        <field name="type_item" invisible="1"/>
+                        <field name="item_dp_name" />
+                        <field name="item_dp_tag" />
+                        <field name="item_dp_serial" />
+                    </tree>
+                  </field>
+                </group>
+
 
               </page>
 
@@ -245,7 +289,7 @@
      <field name="name">history.view.tree</field>
      <field name="model">tiny_stock.history</field>
      <field name="arch" type="xml">
-       <tree>
+       <tree decoration-success="status_list == 'deposition'" decoration-danger="status_list == 'requistion'">
           <field name="status_list"/>
           <field name="type_item"/>
           <field name="item" />

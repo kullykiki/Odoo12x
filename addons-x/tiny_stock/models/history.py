@@ -14,7 +14,8 @@ class History(models.Model):
     # type ของ item ที่จะฝาก
     type_item = fields.Selection([
         ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
-        ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
+        ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด'),
+        ('damaged_property','ทรัพย์สินชำรุดรอการจำหน่าย')
     ])
 
     # รายละเอียดรายการที่สามารถเบิกได้
