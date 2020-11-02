@@ -34,6 +34,7 @@ class Depostion(models.Model):
     ## อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
     ### m2o for o2m อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
     m2o_oracle_code_item = fields.Many2one('tiny_stock.inventory','(o2m) อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
+    item_oci_code = fields.Char('Item Code',related='item.item_oci_code')
 
     ## ทรัพย์สินชำรุดรอการจำหน่าย
     ### m2o for o2m ทรัพย์สินชำรุดรอการจำหน่าย
@@ -76,6 +77,7 @@ class Requistion(models.Model):
     ## อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
     ### m2o for o2m อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด
     m2o_oracle_code_item = fields.Many2one('tiny_stock.inventory','(o2m) อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
+    item_oci_code = fields.Char('Item Code',related='item.item_oci_code')
 
     ## ทรัพย์สินชำรุดรอการจำหน่าย
     m2o_inv_damaged_property = fields.Many2one('tiny_stock.inventory','(o2m) ทรัพย์สินชำรุดรอการจำหน่าย')

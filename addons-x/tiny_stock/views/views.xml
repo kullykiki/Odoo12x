@@ -33,9 +33,9 @@
               
             <group colspan="2">
               <field name="name"/>
-              <field name="type_doc"/>
+              <field name="type_doc"  />
               <field name="actor"/>
-              <field name="deposit_id" attrs="{'invisible': [('type_doc','!=','requistion')]}"/>
+              <field name="deposit_id" attrs="{'invisible': [('type_doc','!=','requistion')]}" domain="[('type_doc','=','deposition')]" />
             </group>
 
             <notebook>
@@ -56,7 +56,7 @@
                         <field name="item" domain="[('item_type','=','office_supplies')]" />
                         <field name="qty" />
                         <field name="unit" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -71,9 +71,10 @@
                           attrs="{'invisible': [('b_d_oracle_code_item','!=',True)]}">
                     <tree editable="bottom">
                         <field name="item" domain="[('item_type','=','oracle_code_item')]" />
+                        <field name="item_oci_code" />
                         <field name="qty" />
                         <field name="unit" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -90,7 +91,7 @@
                         <field name="item_dp_name" />
                         <field name="item_dp_tag" />
                         <field name="item_dp_serial" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -120,7 +121,7 @@
                         <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -142,10 +143,11 @@
                         <field name="m2o_oracle_code_item" invisible="1" /> 
                         <field name="type_item" invisible="1"/>
                         <field name="item" domain="[('item_type','=','oracle_code_item')]" />
+                        <field name="item_oci_code" />
                         <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -168,7 +170,7 @@
                         <field name="item_dp_name" />
                         <field name="item_dp_tag" />
                         <field name="item_dp_serial" />
-                        <field name="acheive" />
+                        <field name="acheive" invisible="1" />
                     </tree>
                   </field>
                 </group>
@@ -230,6 +232,50 @@
     </record>
    
 
+   <record model="ir.ui.view" id="tiny_stock.m_item_form">
+      <field name="name">Item Master Form</field>
+      <field name="model">tiny_stock.m_item</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="รายการของฝาก" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+              
+            <group>
+              <field name="item_type"/>
+            </group>
+
+            <group string="รายละเอียดรายการของฝาก" attrs="{'invisible': [('item_type','!=','office_supplies')]}" >
+              <group>
+                <field name="item_name" />
+                <field name="item_oci_code" />
+              </group>
+              <group>
+                <field name="item_unit" />
+              </group>
+            </group>
+
+            <group string="รายละเอียดรายการของฝาก" attrs="{'invisible': [('item_type','!=','oracle_code_item')]}" >
+              <group>
+                <field name="item_name" />
+                
+              </group>
+              <group>
+                <field name="item_unit" />
+              </group>
+            </group>
+
+
+            
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
    <!-- Stock tree view -->
    <record id="stock_view_tree" model="ir.ui.view">
      <field name="name">stock.view.tree</field>
@@ -252,9 +298,9 @@
      <field name="arch" type="xml">
        <tree>
           <field name="type_item"/>
-          <field name="item_name" />
-          <field name="qty" />
-          <field name="unit" />
+          <field name="item_dp_name" />
+          <field name="item_dp_tag" />
+          <field name="item_dp_serial" />
        </tree>
      </field>
    </record>
