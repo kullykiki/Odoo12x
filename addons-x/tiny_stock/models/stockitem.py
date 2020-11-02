@@ -21,22 +21,15 @@ class Stock(models.Model):
     deposit_id = fields.Many2one('tiny_stock.inventory','Inventory ID')
     
     
+    item_name = fields.Char('รายการ')
+
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()
-    unit = fields.Char('Unit',related='item.item_unit')  
+    unit = fields.Char('Unit')  
+    item_dp_name = fields.Char('Item Name')
     item_dp_tag = fields.Char('Item Tag')
     item_dp_serial = fields.Char('Item Serial') 
 
-    @api.multi
-    def name_get(self):
-        res = []
-        for stock in self:
-            if stock.type_item == 'office_supplies':
-                name = '{} {} {}'.format(stock.item.item_name,stock.qty,stock.unit)
-            elif stock.type_item == 'oracle_code_item':
-                name = '{}({}) {} {}'.format(stock.item.item_name,stock.item.item_oci_code,stock.qty,stock.unit)
-            elif stock.type_item == 'damaged_property':
-                name = '{} (T: {} / S: {})'.format(stock.item.item_name,stock.item.item_dp_tag,stock.item.item_dp_serial)
-            res.append((stock.id, name))
-        return res
+    
+            
 

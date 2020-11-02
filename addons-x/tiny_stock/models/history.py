@@ -11,24 +11,37 @@ class History(models.Model):
         โมเดลที่จะแสดงประวัติการเบิกฝากของ ตามรายการของ เหมือน bookbank
     """
     
-    # type ของ item ที่จะฝาก
+    
+
+    # tree view ที่จะแสดง
+
+    ## สถานะรายการ
+    status_list = fields.Selection([
+        ('deposition', 'ฝาก'),
+        ('requistion', 'เบิก')], 
+        string='กิจกรรม'
+        )
+    ## type ของ item ที่จะฝาก
     type_item = fields.Selection([
         ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
         ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด'),
         ('damaged_property','ทรัพย์สินชำรุดรอการจำหน่าย')
     ])
-
-    # รายละเอียดรายการที่สามารถเบิกได้
-    item = fields.Many2one('tiny_stock.m_item','Item')
+    item_name = fields.Char('รายการ')
     qty = fields.Integer()
-    unit = fields.Char('Unit',related='item.item_unit')
-
-    # การทำรายการเกิดจากรายการใด
+    unit = fields.Char('Unit')
+    ## การทำรายการเกิดจากรายการใด
     main_id = fields.Many2one('tiny_stock.inventory','เลขที่รายการ')
 
-    # สถานะรายการ
-    status_list = fields.Selection([
-        ('deposition', 'ฝาก'),
-        ('requistion', 'ถอน')], 
-        string='กิจกรรม'
-        )
+    
+    # รายละเอียดรายการที่สามารถเบิกได้
+    item = fields.Many2one('tiny_stock.m_item','Item')
+    
+    ## ทรัพย์สินชำรุดรอการจำหน่าย
+    item_dp_name = fields.Char('Item Name')
+    item_dp_tag = fields.Char('Item Tag')
+    item_dp_serial = fields.Char('Item Serial')
+
+    
+
+    

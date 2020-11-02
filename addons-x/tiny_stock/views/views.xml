@@ -34,6 +34,7 @@
             <group colspan="2">
               <field name="name"/>
               <field name="type_doc"/>
+              <field name="actor"/>
               <field name="deposit_id" attrs="{'invisible': [('type_doc','!=','requistion')]}"/>
             </group>
 
@@ -52,9 +53,10 @@
                           nolabel="1"
                           attrs="{'invisible': [('b_d_office_supplies','!=',True)]}">
                     <tree editable="bottom">
-                        <field name="item" />
+                        <field name="item" domain="[('item_type','=','office_supplies')]" />
                         <field name="qty" />
                         <field name="unit" />
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
@@ -68,9 +70,10 @@
                           nolabel="1"
                           attrs="{'invisible': [('b_d_oracle_code_item','!=',True)]}">
                     <tree editable="bottom">
-                        <field name="item" />
+                        <field name="item" domain="[('item_type','=','oracle_code_item')]" />
                         <field name="qty" />
                         <field name="unit" />
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
@@ -87,7 +90,7 @@
                         <field name="item_dp_name" />
                         <field name="item_dp_tag" />
                         <field name="item_dp_serial" />
-                        
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
@@ -98,7 +101,8 @@
                     attrs="{'invisible': [('type_doc','!=','requistion')]}">
                 
                 <group  string="วัสดุสำนักงานสิ้นเปลือง"  
-                        colspan="4">
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
                   <field name="b_r_office_supplies" colspan="2"/>
                   <newline />
                   <field  name="r_office_supplies_list" 
@@ -108,20 +112,22 @@
                               'default_m2o_office_supplies': deposit_id,
                               'default_type_item': 'office_supplies'
                           }"
-                          attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
+                          >
                     <tree editable="bottom">
                         <field name="m2o_office_supplies" invisible="1" /> 
                         <field name="type_item" invisible="1"/>
-                        <field name="item" />
+                        <field name="item" domain="[('item_type','=','office_supplies')]" />
                         <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
 
                 <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
-                        colspan="4">
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
                   <field name="b_r_oracle_code_item" colspan="2" />
                   <newline />
                   <field  name="r_oracle_code_item_list" 
@@ -131,36 +137,38 @@
                               'default_m2o_oracle_code_item': deposit_id,
                               'default_type_item': 'oracle_code_item'
                           }"
-                          attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
+                          >
                     <tree editable="bottom">
                         <field name="m2o_oracle_code_item" invisible="1" /> 
                         <field name="type_item" invisible="1"/>
-                        <field name="item" />
+                        <field name="item" domain="[('item_type','=','oracle_code_item')]" />
                         <field name="stock_qty" />
                         <field name="qty" />
                         <field name="unit" />
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
 
                 <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
-                        colspan="4">
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_damaged_property','!=',True)]}">
                   <field name="b_r_damaged_property" colspan="2" />
                   <newline />
                   <field  name="r_damaged_property_list" 
                           colspan="4" 
                           nolabel="1"
                           context="{
-                              'default_m2o_damaged_property': deposit_id,
                               'default_type_item': 'damaged_property'
                           }"
-                          attrs="{'invisible': [('b_r_damaged_property','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="m2o_damaged_property" invisible="1" /> 
+                          domain="[('m2o_inv_damaged_property','=',deposit_id),('qty','!=',0)]"
+                          >
+                    <tree editable="bottom"> 
                         <field name="type_item" invisible="1"/>
                         <field name="item_dp_name" />
                         <field name="item_dp_tag" />
                         <field name="item_dp_serial" />
+                        <field name="acheive" />
                     </tree>
                   </field>
                 </group>
@@ -171,7 +179,8 @@
               <page string = "คลัง">
                 
                 <group  string="วัสดุสำนักงานสิ้นเปลือง"  
-                        colspan="4">
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_office_supplies','!=',True)]}">
 
                   <field  name="s_office_supplies_list" 
                           colspan="4" 
@@ -181,9 +190,21 @@
                 </group>
 
                 <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
-                        colspan="4">
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_oracle_code_item','!=',True)]}">
  
                   <field  name="s_oracle_code_item_list" 
+                          colspan="4" 
+                          nolabel="1"
+                          />
+                    
+                </group>
+
+                <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
+                        colspan="4"
+                        attrs="{'invisible': [('b_r_damaged_property','!=',True)]}">
+ 
+                  <field  name="s_damaged_property_list" 
                           colspan="4" 
                           nolabel="1"
                           />
@@ -200,38 +221,6 @@
                 </group>
               </page>
 
-              <!-- <page string = "คลัง">
-                <group string="Stock"  colspan="4">
-                  <field name="stock_item" colspan="4" nolabel="1">
-                    <tree>
-                        <field name="item" />
-                        <field name="qty" />
-                        <field name="unit" />
-                    </tree>
-                  </field>
-                </group>
-              </page>
-              <page string = "เบิก">
-                <group string="Require"  colspan="4">
-                  <field name="deposit_id" colspan="2" />
-                  <newline />
-                  <field name="required_item" colspan="4" nolabel="1">
-                    <tree editable="bottom">
-                        <field name="stock_id" />
-                        <field name="item" />
-                        <field name="qty" />
-                        <field name="unit" />
-                    </tree>
-                  </field>
-                </group>
-              </page>
-
-              <page attrs="{'invisible': [('type_doc','!=','deposition')]}" string="ประวัติการเบิก" >
-                <group string="Requistion"  colspan="4">
-                  <field name="required_list" colspan="4" nolabel="1">
-                  </field>
-                </group>
-              </page>-->
             </notebook> 
             
 
@@ -249,7 +238,7 @@
        <tree>
           <field name="deposit_id"/>
           <field name="type_item"/>
-          <field name="item" />
+          <field name="item_name" />
           <field name="qty" />
           <field name="unit" />
        </tree>
@@ -263,7 +252,7 @@
      <field name="arch" type="xml">
        <tree>
           <field name="type_item"/>
-          <field name="item" />
+          <field name="item_name" />
           <field name="qty" />
           <field name="unit" />
        </tree>
@@ -292,7 +281,7 @@
        <tree decoration-success="status_list == 'deposition'" decoration-danger="status_list == 'requistion'">
           <field name="status_list"/>
           <field name="type_item"/>
-          <field name="item" />
+          <field name="item_name" />
           <field name="qty" />
           <field name="unit" />
           <field name="main_id" />
@@ -314,11 +303,11 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="tiny_stock.action_window_requistion">
+    <!-- <record model="ir.actions.act_window" id="tiny_stock.action_window_requistion">
       <field name="name">Requistion window</field>
       <field name="res_model">tiny_stock.requistion</field>
       <field name="view_mode">tree,form</field>
-    </record>
+    </record> -->
 
     <record model="ir.actions.act_window" id="tiny_stock.action_window_m_item">
       <field name="name">Item window</field>
@@ -355,8 +344,9 @@
    
     <!-- menu categories -->
     
-    <menuitem name="Deposit" 
-              id="tiny_stock.deposit_menu" 
+    <menuitem name="Take Care Your Item 😉"
+              sequence="1" 
+              id="tiny_stock.main_menu" 
               parent="tiny_stock.menu_root"
               action="tiny_stock.action_window_inventory"/>
     <!-- <menuitem name="Menu 2" id="tiny_stock.menu_2" parent="tiny_stock.menu_root"/> -->
@@ -369,11 +359,11 @@
               action="tiny_stock.action_window_stock"
              />
 
-    <menuitem name="Request" 
+    <!-- <menuitem name="Request" 
               id="tiny_stock.request_menu" 
               parent="tiny_stock.menu_root"
               action="tiny_stock.action_window_requistion"
-             />
+             /> -->
     
     <menuitem name="History" 
               id="tiny_stock.history_menu" 

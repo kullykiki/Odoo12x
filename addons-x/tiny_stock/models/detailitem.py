@@ -12,6 +12,9 @@ class Depostion(models.Model):
         โมเดลย่อยสำหรับการฝาก ทุกประเภท เก็บในโมเดลเดียวกัน ค่อยไป context view ใน form เอา ตอนแยกประเภท
     """
 
+
+    acheive = fields.Boolean('ดำเนินการ')
+
     # type ของ item ที่จะฝาก
     type_item = fields.Selection([
         ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
@@ -48,6 +51,8 @@ class Requistion(models.Model):
         โมเดลย่อยสำหรับการเบิก ทุกประเภท เก็บในโมเดลเดียวกัน ค่อยไป context view ใน form เอา ตอนแยกประเภท
     """
 
+    acheive = fields.Boolean('ดำเนินการ')
+
     # type ของ item ที่จะเบิก
     type_item = fields.Selection([
         ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
@@ -55,10 +60,12 @@ class Requistion(models.Model):
         ('damaged_property','ทรัพย์สินชำรุดรอการจำหน่าย')
     ])
 
+    item_name = fields.Char('รายการ')
+
     # รายละเอียดรายการที่สามารถเบิกได้
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()
-    unit = fields.Char('Unit',related='item.item_unit')
+    unit = fields.Char('Unit',compute="_compute_stock_unit", store=True)
     stock_qty = fields.Integer('สินค้าคงเหลือ',compute="_compute_stock_qty", store=True)
     
 
@@ -71,8 +78,8 @@ class Requistion(models.Model):
     m2o_oracle_code_item = fields.Many2one('tiny_stock.inventory','(o2m) อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด')
 
     ## ทรัพย์สินชำรุดรอการจำหน่าย
-    ### m2o for o2m ทรัพย์สินชำรุดรอการจำหน่าย
-    m2o_damaged_property = fields.Many2one('tiny_stock.inventory','(o2m) ทรัพย์สินชำรุดรอการจำหน่าย')
+    m2o_inv_damaged_property = fields.Many2one('tiny_stock.inventory','(o2m) ทรัพย์สินชำรุดรอการจำหน่าย')
+    m2o_s_damaged_property = fields.Many2one('tiny_stock.stock','(m2o) ทรัพย์สินชำรุดรอการจำหน่าย')
     item_dp_name = fields.Char('Item Name')
     item_dp_tag = fields.Char('Item Tag')
     item_dp_serial = fields.Char('Item Serial') 
@@ -92,9 +99,15 @@ class Requistion(models.Model):
                     ('deposit_id','=',rec.m2o_oracle_code_item.deposit_id.id),
                     ('item','=',rec.item.id)
                 ],limit=1)['qty']
-            elif rec.m2o_damaged_property and rec.item:
-                rec.stock_qty = self.env['tiny_stock.stock'].search([
-                    ('deposit_id','=',rec.m2o_damaged_property.deposit_id.id),
-                    ('item','=',rec.item.id)
-                ],limit=1)['qty']
+
+    @api.depends('type_item','item')
+    def _compute_stock_unit(self):
+        for rec in self:
+            if rec.type_item == 'damaged_property':
+                rec.unit = 'ชิ้น'
+            else:
+                if rec.m2o_office_supplies and rec.item:
+                    rec.unit = rec.item.item_unit
+                elif rec.m2o_oracle_code_item and rec.item:
+                    rec.unit = rec.item.item_unit
                     
