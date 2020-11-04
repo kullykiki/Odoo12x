@@ -248,29 +248,15 @@
               <field name="item_type"/>
             </group>
 
-            <group string="รายละเอียดรายการของฝาก" attrs="{'invisible': [('item_type','!=','office_supplies')]}" >
+            <group string="รายละเอียดรายการของฝาก"  >
               <group>
                 <field name="item_name" />
-                <field name="item_oci_code" />
+                <field name="item_oci_code" attrs="{'invisible': [('item_type','!=','oracle_code_item')]}"/>
               </group>
               <group>
                 <field name="item_unit" />
               </group>
             </group>
-
-            <group string="รายละเอียดรายการของฝาก" attrs="{'invisible': [('item_type','!=','oracle_code_item')]}" >
-              <group>
-                <field name="item_name" />
-                
-              </group>
-              <group>
-                <field name="item_unit" />
-              </group>
-            </group>
-
-
-            
-
           </sheet>
         </form>
       </field>

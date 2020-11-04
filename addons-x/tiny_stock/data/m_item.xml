@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <!-- Add you code here -->
+        <record id="os_a4" model="tiny_stock.m_item">
+            <field name="item_name">กระดาษ A4 แบบ 70 แกรม</field>
+            <field name="item_unit">รีม</field>
+            <field name="item_type">office_supplies</field>
+        </record>
+        <record id="os_a3" model="tiny_stock.m_item">
+            <field name="item_name">กระดาษ A3  แบบ 70 แกรม</field>
+            <field name="item_unit">รีม</field>
+            <field name="item_type">office_supplies</field>
+        </record>
+        <record id="os_pos" model="tiny_stock.m_item">
+            <field name="item_name">กระดาษพิมพ์ใบเสร็จ POS</field>
+            <field name="item_unit">รีม</field>
+            <field name="item_type">office_supplies</field>
+        </record>
+        <record id="oci_001" model="tiny_stock.m_item">
+            <field name="item_name">Oracle Code Item 001</field>
+            <field name="item_unit">ตัว</field>
+            <field name="item_type">oracle_code_item</field>
+            <field name="item_oci_code">oci_001</field>
+        </record>
+        <record id="oci_00/" model="tiny_stock.m_item">
+            <field name="item_name">Oracle Code Item 002</field>
+            <field name="item_unit">เครื่อง</field>
+            <field name="item_type">oracle_code_item</field>
+            <field name="item_oci_code">oci_002</field>
+        </record>
+    </data>
+</odoo>
