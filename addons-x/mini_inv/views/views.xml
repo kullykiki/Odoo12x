@@ -1,6 +1,7 @@
 <odoo>
   <data>
-    
+
+<!-- ######################  🌸  ###################   🌸M Product🌸   ######################  🌸  #########################  -->    
     <!-- Master Product List -->
     <record model="ir.ui.view" id="mini_inv.x_master_lg_product_list">
       <field name="name">mini_inv.x_master_lg_product_list</field>
@@ -64,7 +65,7 @@
       <field name="view_mode">tree,form</field>
     </record>
    
-<!-- ######################  🌸  ######################  🌸  ########################  🌸  #########################  -->
+<!-- ######################  🌸  ###################   🌸M Stock🌸   ######################  🌸  #########################  -->    
 
    <!-- Master Stock List -->
     <record model="ir.ui.view" id="mini_inv.x_master_lg_stock_list">
@@ -118,7 +119,204 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-<!-- ######################  🌸  ######################  🌸  ########################  🌸  #########################  -->
+<!-- ######################  🌸  ###################   🌸M Status🌸   ######################  🌸  #########################  -->    
+
+ <!-- Master Status List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_status_list">
+      <field name="name">mini_inv.x_master_lg_status_list</field>
+      <field name="model">mini_inv.x_master_lg_status</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+          <field name="x_activity"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Master Status Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_status_form">
+      <field name="name">mini_inv.x_master_lg_status_form</field>
+      <field name="model">mini_inv.x_master_lg_status</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="สถานะใบฝาก/เบิกของ" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+
+            <group >
+              <group>
+                <field name="x_name" />
+              </group>
+              <group>
+                <field name="x_activity" />
+              </group>
+            </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_m_status">
+      <field name="name">คลังฝากของ</field>
+      <field name="res_model">mini_inv.x_master_lg_status</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+<!-- ######################  🌸  ###################   🌸SM RO🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master RO List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_ro_list">
+      <field name="name">mini_inv.x_master_lg_ro_list</field>
+      <field name="model">mini_inv.x_master_lg_ro</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Sub Master RO Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_ro_form">
+      <field name="name">mini_inv.x_master_lg_ro_form</field>
+      <field name="model">mini_inv.x_master_lg_ro</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="RO คลัง" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+
+            <group >
+              <field name="x_name" />
+            </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_sm_ro">
+      <field name="name">[SM] RO คลัง</field>
+      <field name="res_model">mini_inv.x_master_lg_ro</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+<!-- ######################  🌸  ###################   🌸SM Cluster🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master Cluster List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_cluster_list">
+      <field name="name">mini_inv.x_master_lg_cluster_list</field>
+      <field name="model">mini_inv.x_master_lg_cluster</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+          <field name="x_ro"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Sub Master Cluster Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_cluster_form">
+      <field name="name">mini_inv.x_master_lg_cluster_form</field>
+      <field name="model">mini_inv.x_master_lg_cluster</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="Cluster คลัง" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+
+            <group >
+              <group>
+                <field name="x_name" />
+              </group>
+              <group>
+                <field name="x_ro" />
+              </group>
+            </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_sm_cluster">
+      <field name="name">[SM] Cluster คลัง</field>
+      <field name="res_model">mini_inv.x_master_lg_cluster</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+<!-- ######################  🌸  ###################   🌸SM Code🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master Code List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_code_list">
+      <field name="name">mini_inv.x_master_lg_code_list</field>
+      <field name="model">mini_inv.x_master_lg_code</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+          <field name="x_cluster_name"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Sub Master Code Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_code_form">
+      <field name="name">mini_inv.x_master_lg_code_form</field>
+      <field name="model">mini_inv.x_master_lg_code</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="รหัสคลัง" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+
+            <group >
+              <group>
+                <field name="x_name" />
+              </group>
+              <group>
+                <field name="x_cluster_name" />
+              </group>
+            </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_sm_code">
+      <field name="name">[SM] รหัสคลัง</field>
+      <field name="res_model">mini_inv.x_master_lg_code</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+<!-- ######################  🌸  #####################  🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
 
    
   </data>

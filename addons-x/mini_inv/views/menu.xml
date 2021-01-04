@@ -16,10 +16,16 @@
                 action="mini_inv.action_window_m_product"/>
         <menuitem name="[M] Stock" id="mini_inv.x_master_lg_stock_menu" parent="mini_inv.master"
                 action="mini_inv.action_window_m_stock"/>
+        <menuitem name="[M] Status" id="mini_inv.x_master_lg_status_menu" parent="mini_inv.master"
+                action="mini_inv.action_window_m_status"/>
         
         <!-- Under menu Sub Master -->
-        <menuitem name="[M] RO คลัง" id="mini_inv.x_master_lg_ro_menu" parent="mini_inv.sub_master"
-                />
+        <menuitem name="[SM] RO คลัง" id="mini_inv.x_master_lg_ro_menu" parent="mini_inv.sub_master"
+                action="mini_inv.action_window_sm_ro" />
+        <menuitem name="[SM] Cluster คลัง" id="mini_inv.x_master_lg_cluster_menu" parent="mini_inv.sub_master"
+                action="mini_inv.action_window_sm_cluster" />
+        <menuitem name="[SM] รหัสคลัง" id="mini_inv.x_master_lg_code_menu" parent="mini_inv.sub_master"
+                action="mini_inv.action_window_sm_code" />
 
     </data>
 </odoo>
