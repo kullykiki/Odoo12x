@@ -26,6 +26,13 @@
                       icon="fa-archive">
                 Reduce Stock
               </button>
+              <button 
+                      name="pick_up_item" 
+                      type="object" 
+                      class="oe_stat_button" 
+                      icon="fa-archive">
+               Pick up Item
+              </button>
             </div>
 
             <br/>
@@ -272,6 +279,7 @@
           <field name="type_item"/>
           <field name="item_name" />
           <field name="qty" />
+          <field name="qty_lock" />
           <field name="unit" />
        </tree>
      </field>

@@ -119,6 +119,7 @@ class Inventory(models.Model):
                     'item_name':item.item.item_name,
                     'item':item.item.id,
                     'qty':item.qty,
+                    'qty_lock':0,
                     'unit':item.item.item_unit})
                 self.env['tiny_stock.history'].create({
                     'type_item':'office_supplies',
@@ -136,6 +137,7 @@ class Inventory(models.Model):
                     'item_name':item.item.item_name,
                     'item':item.item.id,
                     'qty':item.qty,
+                    'qty_lock':0,
                     'unit':item.item.item_unit})
                 self.env['tiny_stock.history'].create({
                     'type_item':'oracle_code_item',
@@ -155,6 +157,7 @@ class Inventory(models.Model):
                     'item_dp_tag':item.item_dp_tag,
                     'item_dp_serial':item.item_dp_serial,
                     'qty':1,
+                    'qty_lock':0,
                     'unit':'ชิ้น'
                     })
                 self.env['tiny_stock.history'].create({
@@ -208,6 +211,7 @@ class Inventory(models.Model):
                     'unit':item.item.item_unit,
                     'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
+                    stock_item.qty_lock = item.qty
                     item.acheive = True
         if self.b_r_oracle_code_item:
             for item in self.r_oracle_code_item_list:
@@ -229,6 +233,7 @@ class Inventory(models.Model):
                     'unit':item.item.item_unit,
                     'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
+                    stock_item.qty_lock = item.qty
                     item.acheive = True
         if self.b_r_damaged_property:
             for item in self.r_damaged_property_list:
@@ -248,10 +253,27 @@ class Inventory(models.Model):
                     'unit':'ชิ้น',
                     'status_list':'requistion'})
                     stock_item.qty = 0
+                    stock_item.qty_lock = 1
                     item.qty = 0
                     item.acheive = True
                   
-
+    def pick_up_item(self):
+        """
+        รับของออกจากคลังแล้วจร้าา
+        """
+        if self.b_r_office_supplies :
+            for item in self.r_office_supplies_list:
+                stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item','=',item.item.id)])
+                stock.qty_lock = 0
+        if self.b_r_oracle_code_item :
+            for item in self.r_oracle_code_item_list:
+                stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item','=',item.item.id)])
+                stock.qty_lock = 0
+        if self.b_r_damaged_property :
+            for item in self.r_damaged_property_list:
+                stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item_dp_name','=',item.item_dp_name),('item_dp_tag','=',item.item_dp_tag),('item_dp_serial','=',item.item_dp_serial)])
+                stock.qty_lock = 0
+        
 
     # @api.model
     # def create(self, vals):

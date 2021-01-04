@@ -25,6 +25,7 @@ class Stock(models.Model):
 
     item = fields.Many2one('tiny_stock.m_item','Item')
     qty = fields.Integer()
+    qty_lock = fields.Integer()
     unit = fields.Char('Unit')  
     item_dp_name = fields.Char('Item Name')
     item_dp_tag = fields.Char('Item Tag')
