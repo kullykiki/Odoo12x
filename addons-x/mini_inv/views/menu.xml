@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <!-- Top menu item -->
+        <menuitem name="ระบบฝากของของพี่แสงดาว⭐" id="mini_inv.menu_root"/>
+    
+        <!-- menu categories -->
+        <menuitem name="Configuration" id="mini_inv.configuration" parent="mini_inv.menu_root"/>
+        
+        
+        <menuitem name="[M] Item" id="mini_inv.x_master_lg_product_menu" parent="mini_inv.configuration"
+                action="mini_inv.action_window_m_product"/>
+        
+        
+    </data>
+</odoo>

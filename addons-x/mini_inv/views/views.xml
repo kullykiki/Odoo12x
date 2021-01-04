@@ -1,28 +1,69 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="mini_inv.list">
-      <field name="name">mini_inv list</field>
-      <field name="model">mini_inv.mini_inv</field>
+    
+    <!-- Master Product List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_product_list">
+      <field name="name">mini_inv.x_master_lg_product_list</field>
+      <field name="model">mini_inv.x_master_lg_product</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="x_item_type"/>
+          <field name="x_name"/>
+          <field name="x_detail"/>
         </tree>
       </field>
     </record>
-    -->
+   
+
+   <!-- Master Product List -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_product_form">
+      <field name="name">mini_inv.x_master_lg_product_form</field>
+      <field name="model">mini_inv.x_master_lg_product</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="รายการของฝาก" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+            <h4><field name="x_name"/></h4>
+              
+            <group>
+              <field name="x_item_type"/>
+            </group>
+
+            <group string="รายละเอียดรายการของฝาก"  >
+              <group>
+                <field name="x_item_name" />
+                <field name="x_item_oci_code" attrs="{'invisible': [('x_item_type','!=','oracle_code_item')]}"/>
+              </group>
+              <group>
+                <field name="x_item_unit" />
+              </group>
+            </group>
+
+            <group col='4' string="รายละเอียดวัสดุสินเปลือง"  attrs="{'invisible': [('x_item_type','!=','office_supplies')]}" >
+              <field name="x_detail" colspan="4"/>
+              <field name="x_brand" colspan="2" />
+              <field name="x_color" colspan="2" />
+              <field name="x_version" colspan="2" />
+            </group>
+
+
+          </sheet>
+        </form>
+      </field>
+    </record>
 
     <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="mini_inv.action_window">
-      <field name="name">mini_inv window</field>
-      <field name="res_model">mini_inv.mini_inv</field>
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_m_product">
+      <field name="name">รายละเอียดรายการของฝาก</field>
+      <field name="res_model">mini_inv.x_master_lg_product</field>
       <field name="view_mode">tree,form</field>
     </record>
-    -->
+   
 
     <!-- server action to the one above -->
     <!--
@@ -40,21 +81,7 @@
     </record>
     -->
 
-    <!-- Top menu item -->
-    <!--
-    <menuitem name="mini_inv" id="mini_inv.menu_root"/>
-    -->
-    <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="mini_inv.menu_1" parent="mini_inv.menu_root"/>
-    <menuitem name="Menu 2" id="mini_inv.menu_2" parent="mini_inv.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="mini_inv.menu_1_list" parent="mini_inv.menu_1"
-              action="mini_inv.action_window"/>
-    <menuitem name="Server to list" id="mini_inv" parent="mini_inv.menu_2"
-              action="mini_inv.action_server"/>
-    -->
+   
+   
   </data>
 </odoo>
