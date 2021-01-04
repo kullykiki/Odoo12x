@@ -15,7 +15,7 @@
     </record>
    
 
-   <!-- Master Product List -->
+   <!-- Master Product Form -->
    <record model="ir.ui.view" id="mini_inv.x_master_lg_product_form">
       <field name="name">mini_inv.x_master_lg_product_form</field>
       <field name="model">mini_inv.x_master_lg_product</field>
@@ -64,24 +64,62 @@
       <field name="view_mode">tree,form</field>
     </record>
    
+<!-- ######################  🌸  ######################  🌸  ########################  🌸  #########################  -->
 
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="mini_inv.action_server">
-      <field name="name">mini_inv server</field>
-      <field name="model_id" ref="model_mini_inv_mini_inv"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
+   <!-- Master Stock List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_stock_list">
+      <field name="name">mini_inv.x_master_lg_stock_list</field>
+      <field name="model">mini_inv.x_master_lg_stock</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+          <field name="x_code"/>
+          <field name="x_cluster"/>
+          <field name="x_ro"/>
+        </tree>
       </field>
     </record>
-    -->
-
    
+
+   <!-- Master Stock Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_stock_form">
+      <field name="name">mini_inv.x_master_lg_stock_form</field>
+      <field name="model">mini_inv.x_master_lg_stock</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="คลังฝากของ" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+            <h4><field name="x_name"/></h4>
+
+            <group string="รายละเอียดคลังฝากของ"  >
+              <group>
+                <field name="x_code" />
+                <field name="x_ro" />
+              </group>
+              <group>
+                <field name="x_cluster" />
+              </group>
+            </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_m_stock">
+      <field name="name">คลังฝากของ</field>
+      <field name="res_model">mini_inv.x_master_lg_stock</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+<!-- ######################  🌸  ######################  🌸  ########################  🌸  #########################  -->
+
    
   </data>
 </odoo>

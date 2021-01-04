@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "mini_inv",
+    'name': "ระบบฝากของของพี่แสงดาว⭐",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        ระบบฝากของของพี่แสงดาว⭐""",
 
     'description': """
-        Long description of module's purpose
+        ระบบฝากของของพี่แสงดาว⭐
     """,
 
-    'author': "My Company",
+    'author': "🤖 Odoo Ranger ✨",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
