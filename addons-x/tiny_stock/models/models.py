@@ -202,6 +202,9 @@ class Inventory(models.Model):
                                         ('deposit_id','=',item.m2o_office_supplies.deposit_id.id),
                                         ('item','=',item.item.id)
                                     ],limit=1)
+                    if stock_item.qty < item.qty:
+                        strer = "ของไม่พอเบิก กรุณารีเฟรชบราวเซอร์ แล้วทำรายการใหม่อีกครั้งค่ะ\n"
+                        raise ValidationError(strer)
                     self.env['tiny_stock.history'].create({
                     'type_item':'office_supplies',
                     'main_id':self.id,
@@ -211,7 +214,7 @@ class Inventory(models.Model):
                     'unit':item.item.item_unit,
                     'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
-                    stock_item.qty_lock = item.qty
+                    stock_item.qty_lock = stock_item.qty_lock + item.qty
                     item.acheive = True
         if self.b_r_oracle_code_item:
             for item in self.r_oracle_code_item_list:
@@ -224,6 +227,9 @@ class Inventory(models.Model):
                                         ('deposit_id','=',item.m2o_oracle_code_item.deposit_id.id),
                                         ('item','=',item.item.id)
                                     ],limit=1)
+                    if stock_item.qty < item.qty:
+                        strer = "ของไม่พอเบิก กรุณารีเฟรชบราวเซอร์ แล้วทำรายการใหม่อีกครั้งค่ะ\n"
+                        raise ValidationError(strer)
                     self.env['tiny_stock.history'].create({
                     'type_item':'oracle_code_item',
                     'main_id':self.id,
@@ -233,7 +239,7 @@ class Inventory(models.Model):
                     'unit':item.item.item_unit,
                     'status_list':'requistion'})
                     stock_item.qty = stock_item.qty - item.qty
-                    stock_item.qty_lock = item.qty
+                    stock_item.qty_lock =  stock_item.qty_lock + item.qty
                     item.acheive = True
         if self.b_r_damaged_property:
             for item in self.r_damaged_property_list:
@@ -244,6 +250,9 @@ class Inventory(models.Model):
                     stock_item = self.env['tiny_stock.stock'].search([
                                         ('id','=',item.m2o_s_damaged_property.id)
                                     ],limit=1)
+                    if stock_item.qty < item.qty:
+                        strer = "ของไม่พอเบิก กรุณารีเฟรชบราวเซอร์ แล้วทำรายการใหม่อีกครั้งค่ะ\n"
+                        raise ValidationError(strer)
                     self.env['tiny_stock.history'].create({
                     'type_item':'damaged_property',
                     'main_id':self.id,
@@ -264,11 +273,11 @@ class Inventory(models.Model):
         if self.b_r_office_supplies :
             for item in self.r_office_supplies_list:
                 stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item','=',item.item.id)])
-                stock.qty_lock = 0
+                stock.qty_lock = stock.qty_lock - item.qty
         if self.b_r_oracle_code_item :
             for item in self.r_oracle_code_item_list:
                 stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item','=',item.item.id)])
-                stock.qty_lock = 0
+                stock.qty_lock = stock.qty_lock - item.qty
         if self.b_r_damaged_property :
             for item in self.r_damaged_property_list:
                 stock = self.env['tiny_stock.stock'].search([('deposit_id','=',self.deposit_id.id),('item_dp_name','=',item.item_dp_name),('item_dp_tag','=',item.item_dp_tag),('item_dp_serial','=',item.item_dp_serial)])

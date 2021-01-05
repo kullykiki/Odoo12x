@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+         <!--SM Unit Default -->
+          <record id="mini_inv.unit_object1" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">ชิ้น</field>
+          </record>
+          <record id="mini_inv.unit_object2" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">คู่</field>
+          </record>
+          <record id="mini_inv.unit_object3" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">อัน</field>
+          </record>
+          <record id="mini_inv.unit_object4" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">กล่อง</field>
+          </record>
+          <record id="mini_inv.unit_object5" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">พาเลท</field>
+          </record>
+          <record id="mini_inv.unit_object6" model="mini_inv.x_master_lg_unit">
+            <field name="x_name">รีม</field>
+          </record>
+        
+    </data>
+</odoo>

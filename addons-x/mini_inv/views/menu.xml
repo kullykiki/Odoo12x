@@ -2,12 +2,15 @@
 <odoo>
     <data>
         <!-- Top menu item -->
-        <menuitem name="ระบบฝากของของพี่แสงดาว⭐" id="mini_inv.menu_root"/>
+        <menuitem name="ระบบฝากของของพี่แสงดาว⭐" id="mini_inv.menu_root" web_icon="mini_inv,static/description/icon.png" />
     
         <!-- menu categories -->
+        <menuitem name="Stock" id="mini_inv.stock_menu" parent="mini_inv.menu_root"
+                action="mini_inv.action_window_stock"/>
         <menuitem name="Configuration" id="mini_inv.configuration" parent="mini_inv.menu_root"/>
-        
-        <!-- Under menu Configuration -->
+        <menuitem name="Dev" id="mini_inv.dev" parent="mini_inv.menu_root"/>
+
+<!-- ############################        🍅 Under menu Configuration 🍅       #################################  -->
         <menuitem name="Master" id="mini_inv.master" parent="mini_inv.configuration"/>
         <menuitem name="Sub Master" id="mini_inv.sub_master" parent="mini_inv.configuration"/>
         
@@ -20,6 +23,8 @@
                 action="mini_inv.action_window_m_status"/>
         
         <!-- Under menu Sub Master -->
+        <menuitem name="[SM] หน่วยนับ" id="mini_inv.x_master_lg_unit_menu" parent="mini_inv.sub_master"
+                action="mini_inv.action_window_sm_unit" />
         <menuitem name="[SM] RO คลัง" id="mini_inv.x_master_lg_ro_menu" parent="mini_inv.sub_master"
                 action="mini_inv.action_window_sm_ro" />
         <menuitem name="[SM] Cluster คลัง" id="mini_inv.x_master_lg_cluster_menu" parent="mini_inv.sub_master"
@@ -27,5 +32,14 @@
         <menuitem name="[SM] รหัสคลัง" id="mini_inv.x_master_lg_code_menu" parent="mini_inv.sub_master"
                 action="mini_inv.action_window_sm_code" />
 
+<!-- ############################        🍅 Under menu Dev 🍅       #################################  -->
+        <menuitem name="Detail" id="mini_inv.detail" parent="mini_inv.dev"/>
+        <menuitem name="Wizard" id="mini_inv.wizard" parent="mini_inv.dev"/>
+
+        <!-- Under menu Detail -->
+        <menuitem name="[D] Requistion" id="mini_inv.x_lg_d_requistion_menu" parent="mini_inv.detail"
+                action="mini_inv.action_window_d_requistion"/>
+
+<!-- #####################################         🍅🍅🍅🍅🍅🍅🍅         ####################################  -->
     </data>
 </odoo>

@@ -65,6 +65,46 @@
       <field name="view_mode">tree,form</field>
     </record>
    
+<!-- ######################  🌸  ###################   🌸SM Unit🌸   ######################  🌸  #########################  -->    
+    <!-- Sub Master Unit List -->
+    <record model="ir.ui.view" id="mini_inv.x_master_lg_unit_list">
+      <field name="name">mini_inv.x_master_lg_unit_list</field>
+      <field name="model">mini_inv.x_master_lg_unit</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_name"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Master Product Form -->
+   <record model="ir.ui.view" id="mini_inv.x_master_lg_unit_form">
+      <field name="name">mini_inv.x_master_lg_unit_form</field>
+      <field name="model">mini_inv.x_master_lg_unit</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>  
+            <label for="title" string="หน่วยนับ" style="font-size:23px; font-weight:bold;"/>
+            
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+              
+            <group>
+              <field name="x_name"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="mini_inv.action_window_sm_unit">
+      <field name="name">หน่วยนับ</field>
+      <field name="res_model">mini_inv.x_master_lg_unit</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+   
 <!-- ######################  🌸  ###################   🌸M Stock🌸   ######################  🌸  #########################  -->    
 
    <!-- Master Stock List -->
@@ -314,10 +354,64 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+<!-- ######################  🌸  ###################   🎅Requistion🎅   ######################  🌸  #########################  -->    
 
-
-<!-- ######################  🌸  #####################  🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
-
+ <!-- Requistion List -->
+    <record model="ir.ui.view" id="mini_inv.x_lg_d_requistion_list">
+      <field name="name">mini_inv.x_lg_d_requistion_list</field>
+      <field name="model">mini_inv.x_lg_d_requistion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_requistion_type"/>
+          <field name="x_destroy_item"/>
+          <field name="x_destroy_serial"/>
+          <field name="x_destroy_tag"/>
+          <field name="x_destroy_model"/>
+        </tree>
+      </field>
+    </record>
    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_d_requistion">
+      <field name="name">รายการของที่ต้องการเบิก</field>
+      <field name="res_model">mini_inv.x_lg_d_requistion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+<!-- ######################  🌸  ###################   🎪 Stock 🎪  ######################  🌸  #########################  -->    
+
+ <!-- Stock List -->
+    <record model="ir.ui.view" id="mini_inv.x_lg_stock_list">
+      <field name="name">mini_inv.x_lg_stock_list</field>
+      <field name="model">mini_inv.x_lg_stock</field>
+      <field name="arch" type="xml">
+       <tree>
+          <field name="x_stock_id"/>
+          <field name="x_deposit_id"/>
+          <field name="x_stock_type"/>
+          <field name="x_name" />
+          <field name="x_qty_remain" />
+          <field name="x_qty_lock" />
+          <field name="x_unit" />
+       </tree>
+      </field>
+    </record>
+   
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_stock">
+      <field name="name">ของฝากในระบบ</field>
+      <field name="res_model">mini_inv.x_lg_stock</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+<!-- ######################  🌸  ###################  🌸🌸🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
+
   </data>
 </odoo>
