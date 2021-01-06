@@ -5,8 +5,12 @@
         <menuitem name="ระบบฝากของของพี่แสงดาว⭐" id="mini_inv.menu_root" web_icon="mini_inv,static/description/icon.png" />
     
         <!-- menu categories -->
+        <menuitem name="Inventory" id="mini_inv.inventory_menu" parent="mini_inv.menu_root"
+                action="mini_inv.action_window_inventory"/>
         <menuitem name="Stock" id="mini_inv.stock_menu" parent="mini_inv.menu_root"
                 action="mini_inv.action_window_stock"/>
+        <menuitem name="History" id="mini_inv.history_menu" parent="mini_inv.menu_root"
+                action="mini_inv.action_window_history"/>
         <menuitem name="Configuration" id="mini_inv.configuration" parent="mini_inv.menu_root"/>
         <menuitem name="Dev" id="mini_inv.dev" parent="mini_inv.menu_root"/>
 

@@ -392,7 +392,7 @@
        <tree>
           <field name="x_stock_id"/>
           <field name="x_deposit_id"/>
-          <field name="x_stock_type"/>
+          <field name="x_stock_item_type"/>
           <field name="x_name" />
           <field name="x_qty_remain" />
           <field name="x_qty_lock" />
@@ -410,6 +410,186 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+<!-- ######################  🌸  ###################   🎪 History 🎪  ######################  🌸  #########################  -->    
+
+ <!-- History List -->
+    <record model="ir.ui.view" id="mini_inv.x_lg_history_list">
+      <field name="name">mini_inv.x_lg_history_list</field>
+      <field name="model">mini_inv.x_lg_history</field>
+      <field name="arch" type="xml">
+       <tree decoration-success="x_activity == 'd'" decoration-danger="x_activity == 'r' " decoration-muted="x_activity == 'p'">
+          <field name="x_stock_id"/>
+          <field name="x_activity"/>
+          <field name="x_history_item_type"/>
+          <field name="x_name" />
+          <field name="x_qty" />
+          <field name="x_unit" />
+          <field name="x_inv_id" />
+       </tree>
+      </field>
+    </record>
+   
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_history">
+      <field name="name">ประวัติการทำรายการ</field>
+      <field name="res_model">mini_inv.x_lg_history</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+<!-- ######################  🌸  ###################   🎪 Inventory 🎪   ######################  🌸  #########################  -->    
+
+ <!-- Inventory List -->
+    <record model="ir.ui.view" id="mini_inv.x_lg_inventory_list">
+      <field name="name">mini_inv.x_lg_inventory_list</field>
+      <field name="model">mini_inv.x_lg_inventory</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="x_activity"/>
+          <field name="x_name"/>
+        </tree>
+      </field>
+    </record>
+   
+
+   <!-- Inventory Form -->
+   <record model="ir.ui.view" id="mini_inv.x_lg_inventory_form">
+      <field name="name">mini_inv.x_lg_inventory</field>
+      <field name="model">mini_inv.x_lg_inventory</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            
+            <label for="title" string="Inventory" style="font-size:23px; font-weight:bold;"/>
+
+            <br/>
+            <hr style="border-bottom:1px solid #ccc"/>
+              
+            <group cols="4">
+              <field name="x_name"/>
+              <field name="x_activity"  />
+              <field name="x_stock"/>
+              <field name="x_ref_deposit_id" attrs="{'invisible': [('x_activity','!=','r')]}" domain="[('x_activity','=','d')]" />
+            </group>
+
+            <notebook>
+
+              <page string = "ฝาก"
+                    attrs="{'invisible': [('x_activity','!=','d')]}">
+                
+                <group  string="วัสดุสำนักงานสิ้นเปลือง"  
+                        colspan="4">
+                  <field name="x_d_b_consumables" colspan="2"/>
+                  <newline />
+                  <field  name="x_d_l_consumables" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('x_d_b_consumables','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="x_item" domain="[('x_item_type','=','office_supplies')]" />
+                        <field name="x_num" />
+                        <field name="x_unit" />
+                        <field name="x_active" invisible="1" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
+                        colspan="4">
+                  <field name="x_d_b_oracle_product" colspan="2" />
+                  <newline />
+                  <field  name="x_d_l_oracle_product" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('x_d_b_oracle_product','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="x_item" domain="[('x_item_type','=','oracle_code_item')]" />
+                        <field name="x_oracle_item_code" />
+                        <field name="x_num" />
+                        <field name="x_unit" />
+                        <field name="x_active" invisible="1" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="อุุปกรณ์ความปลอดภัย"  
+                        colspan="4">
+                  <field name="x_d_b_safety" colspan="2" />
+                  <newline />
+                  <field  name="x_d_l_safety" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('x_d_b_safety','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="x_item" domain="[('x_item_type','=','safety')]" />
+                        <field name="x_num" />
+                        <field name="x_unit" />
+                        <field name="x_active" invisible="1" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="สินค้าพรีเมียม หรือสื่อการตลาด"  
+                        colspan="4">
+                  <field name="x_d_b_media" colspan="2" />
+                  <newline />
+                  <field  name="x_d_l_media" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('x_d_b_media','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="x_item" domain="[('x_item_type','=','media')]" />
+                        <field name="x_num" />
+                        <field name="x_unit" />
+                        <field name="x_active" invisible="1" />
+                    </tree>
+                  </field>
+                </group>
+
+                <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
+                        colspan="4">
+                  <field name="x_d_b_damage_product" colspan="2" />
+                  <newline />
+                  <field  name="x_d_l_damage_product" 
+                          colspan="4" 
+                          nolabel="1"
+                          attrs="{'invisible': [('x_d_b_damage_product','!=',True)]}">
+                    <tree editable="bottom">
+                        <field name="x_destroy_item" />
+                        <field name="x_destroy_serial" />
+                        <field name="x_destroy_tag" />
+                        <field name="x_destroy_model" />
+                        <field name="x_active" invisible="1" />
+                    </tree>
+                  </field>
+                </group>
+
+              </page>
+
+              <page string = "เบิก"
+                    attrs="{'invisible': [('x_activity','!=','r')]}">
+
+              </page>
+
+
+            </notebook> 
+            
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="mini_inv.action_window_inventory">
+      <field name="name">ระบบฝากของ</field>
+      <field name="res_model">mini_inv.x_lg_inventory</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
 <!-- ######################  🌸  ###################  🌸🌸🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
 

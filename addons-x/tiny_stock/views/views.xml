@@ -318,13 +318,14 @@
      <field name="name">history.view.tree</field>
      <field name="model">tiny_stock.history</field>
      <field name="arch" type="xml">
-       <tree decoration-success="status_list == 'deposition'" decoration-danger="status_list == 'requistion'">
-          <field name="status_list"/>
-          <field name="type_item"/>
-          <field name="item_name" />
-          <field name="qty" />
-          <field name="unit" />
-          <field name="main_id" />
+       <tree>
+          <field name="x_stock_id"/>
+          <field name="x_inv_id"/>
+          <field name="x_stock_type"/>
+          <field name="x_name" />
+          <field name="x_qty_remain" />
+          <field name="x_qty_lock" />
+          <field name="x_unit" />
        </tree>
      </field>
    </record>

@@ -48,17 +48,18 @@ class MasterLGProduct(models.Model):
         Compute x_name สำหรับ รายการต่างๆ
         """
         for rec in self:
-            rec.x_name = rec.x_item_name
-            if rec.x_item_unit:
-                rec.x_name = '(' +  rec.x_item_unit.x_name +   ') ' + rec.x_name
-            if rec.x_item_oci_code:
-                rec.x_name = rec.x_name + ' รหัส ' + rec.x_item_oci_code
-            if rec.x_brand:
-                rec.x_name = rec.x_name + ' ยี่ห้อ ' + rec.x_brand
-            if rec.x_version:
-                rec.x_name = rec.x_name + ' ' + rec.x_version
-            if rec.x_color :
-                rec.x_name = rec.x_name + ' ' + rec.x_color
+            if rec.x_item_name:
+                rec.x_name = rec.x_item_name
+                if rec.x_item_unit:
+                    rec.x_name = '(' +  rec.x_item_unit.x_name +   ') ' + rec.x_name
+                if rec.x_item_oci_code:
+                    rec.x_name = rec.x_name + ' รหัส ' + rec.x_item_oci_code
+                if rec.x_brand:
+                    rec.x_name = rec.x_name + ' ยี่ห้อ ' + rec.x_brand
+                if rec.x_version:
+                    rec.x_name = rec.x_name + ' ' + rec.x_version
+                if rec.x_color :
+                    rec.x_name = rec.x_name + ' ' + rec.x_color
             
 
 ## ------------------------------------    🎁 Sub Master Item  📦  --------------------------------------------------------

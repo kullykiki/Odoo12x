@@ -9,4 +9,6 @@ admin_mini_x_master_lg_status,mini_inv.x_master_lg_status,model_mini_inv_x_maste
 admin_mini_x_lg_d_deposit,mini_inv.x_lg_d_deposit,model_mini_inv_x_lg_d_deposit,,1,1,1,1
 admin_mini_x_lg_d_requistion,mini_inv.x_lg_d_requistion,model_mini_inv_x_lg_d_requistion,,1,1,1,1
 admin_mini_x_lg_stock,mini_inv.x_lg_stock,model_mini_inv_x_lg_stock,,1,1,1,1
+admin_mini_x_lg_history,mini_inv.x_lg_history,model_mini_inv_x_lg_history,,1,1,1,1
+admin_mini_x_lg_inventory,mini_inv.x_lg_inventory,model_mini_inv_x_lg_inventory,,1,1,1,1
 

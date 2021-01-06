@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+    
+        <!-- ฝาก sequence -->
+        <record id="seq_lgtd" model="ir.sequence">
+            <field name="name">Deposition Seq</field>
+            <field name="code">seq.lgtd</field>
+            <field name="prefix">LGTD-%(year)s-%(month)s-</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="padding">4</field>
+        </record>
+
+        <!-- เบิก sequence -->
+        <record id="seq_lgtr" model="ir.sequence">
+            <field name="name">Requistion Seq</field>
+            <field name="code">seq.lgtr</field>
+            <field name="prefix">LGTR-%(year)s-%(month)s-</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="padding">4</field>
+        </record>
+
+    </data>
+</odoo>

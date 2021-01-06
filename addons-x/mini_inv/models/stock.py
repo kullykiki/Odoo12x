@@ -15,7 +15,7 @@ class LGStock(models.Model):
 ### -----------------------------------------       Field      ------------------------------------------------------
     x_name = fields.Char(string='รายการ')
 
-    x_stock_type = fields.Selection(    string='ประเภทของที่อยู่ในคลัง', 
+    x_stock_item_type = fields.Selection(    string='ประเภทของที่อยู่ในคลัง', 
                                         selection=[ 
                                                 ('office_supplies','วัสดุสำนักงานสิ้นเปลือง'),
                                                 ('oracle_code_item','อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด'),   
