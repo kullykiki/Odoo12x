@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+         <!--SM Unit Default -->
+          <record id="mini_inv.status_obj1" model="mini_inv.x_master_lg_status">
+            <field name="x_name">สร้างเอกสาร</field>
+          </record>
+          <record id="mini_inv.status_obj2" model="mini_inv.x_master_lg_status">
+            <field name="x_name">รอการอนุมัติ</field>
+          </record>
+          <record id="mini_inv.status_obj3" model="mini_inv.x_master_lg_status">
+            <field name="x_name">ตรวจรับของฝาก</field>
+            <field name="x_activity">d</field>
+          </record>
+          <record id="mini_inv.status_obj4" model="mini_inv.x_master_lg_status">
+            <field name="x_name">คืนของฝาก</field>
+            <field name="x_activity">d</field>
+          </record>
+          <record id="mini_inv.status_obj5" model="mini_inv.x_master_lg_status">
+            <field name="x_name">ตัดเบิกของฝาก</field>
+            <field name="x_activity">r</field>
+          </record>
+          <record id="mini_inv.status_obj6" model="mini_inv.x_master_lg_status">
+            <field name="x_name">เสร็จสิ้น</field>
+          </record>
+          <record id="mini_inv.status_obj7" model="mini_inv.x_master_lg_status">
+            <field name="x_name">ปิดงาน</field>
+            <field name="x_activity">d</field>
+          </record>
+          <record id="mini_inv.status_obj8" model="mini_inv.x_master_lg_status">
+            <field name="x_name">ยกเลิก</field>
+          </record>
+        
+    </data>
+</odoo>
