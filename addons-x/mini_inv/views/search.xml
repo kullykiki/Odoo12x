@@ -1,0 +1,169 @@
+<odoo>
+  <data>
+
+<!-- ######################  🌸  ###################   🌸M Product🌸   ######################  🌸  #########################  -->    
+    <!-- Master Product search -->
+        <record id="m_product_search" model="ir.ui.view">
+            <field name="name">mini_inv.x_master_lg_product.search</field>
+            <field name="model">mini_inv.x_master_lg_product</field>
+            <field name="arch" type="xml">
+                <search string="M Product">
+                    <field name="x_name" filter_domain="[ ('x_name','ilike',self)]" string="รายการสินค้า"/>
+                    
+                    <filter string="วัสดุสำนักงานสิ้นเปลือง" name="item_office_supplies" domain="[('x_item_type','=', 'office_supplies')]"/>
+                    <filter string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด" name="item_oracle_code_item" domain="[('x_item_type','=', 'oracle_code_item')]"/>
+                    <filter string="อุปกรณ์ความปลอดภัย" name="item_office_supplies" domain="[('x_item_type','=', 'safety')]"/>
+                    <filter string="สินค้าพรีเมียม หรือสื่อการตลาด" name="item_office_supplies" domain="[('x_item_type','=', 'media')]"/>
+                    <separator />
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="ประเภทรายการสินค้า" name="group_x_item_type" domain="" context="{'group_by':'x_item_type'}"/>
+                        <filter string="หน่วยนับ" name="group_x_item_unit" domain="" context="{'group_by':'x_item_unit'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+   
+   
+
+
+    
+  
+   
+<!-- ######################  🌸  ###################   🌸SM Unit🌸   ######################  🌸  #########################  -->    
+    <!-- Sub Master Unit List -->
+   
+
+   <!-- Master Product Form -->
+   
+
+    <!-- actions opening views on models -->
+
+   
+<!-- ######################  🌸  ###################   🌸M Stock🌸   ######################  🌸  #########################  -->    
+
+   <!-- Master Stock List -->
+    
+   
+
+   <!-- Master Stock Form -->
+   
+
+    <!-- actions opening views on models -->
+    
+    
+
+<!-- ######################  🌸  ###################   🌸M Status🌸   ######################  🌸  #########################  -->    
+
+ <!-- Master Status List -->
+   
+   
+
+   <!-- Master Status Form -->
+  
+
+    <!-- actions opening views on models -->
+    
+   
+
+
+<!-- ######################  🌸  ###################   🌸SM RO🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master RO List -->
+   
+   
+
+   <!-- Sub Master RO Form -->
+   
+
+    <!-- actions opening views on models -->
+    
+   
+
+<!-- ######################  🌸  ###################   🌸SM Cluster🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master Cluster List -->
+   
+   
+
+   <!-- Sub Master Cluster Form -->
+   
+
+    <!-- actions opening views on models -->
+    
+   
+
+<!-- ######################  🌸  ###################   🌸SM Code🌸   ######################  🌸  #########################  -->    
+
+ <!-- Sub Master Code List -->
+    
+   
+
+   <!-- Sub Master Code Form -->
+   
+
+    <!-- actions opening views on models -->
+    
+   
+
+<!-- ######################  🌸  ###################   🎅Requistion🎅   ######################  🌸  #########################  -->    
+
+    <!-- Requistion List -->
+   
+   
+
+    <!-- actions opening views on models -->
+    
+    
+
+
+
+<!-- ######################  🌸  ###################   🎪 Stock 🎪  ######################  🌸  #########################  -->    
+
+ <!-- Stock List -->
+   
+   
+
+    <!-- actions opening views on models -->
+    
+    
+
+<!-- ######################  🌸  ###################   🎪 History 🎪  ######################  🌸  #########################  -->    
+
+ <!-- History List -->
+   
+   
+
+    <!-- actions opening views on models -->
+    
+    
+
+
+<!-- ######################  🌸  ###################   🎪 Inventory 🎪   ######################  🌸  #########################  -->    
+
+  <!-- Inventory List -->
+    
+   
+
+  <!-- Inventory Form -->
+    
+    
+
+  <!-- actions opening views on models -->  
+   
+  
+  <!-- server action to the one above -->
+    
+    
+
+  <!-- server action to the one above -->
+    
+   
+   
+   
+
+
+<!-- ######################  🌸  ###################  🌸🌸🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
+
+  </data>
+</odoo>

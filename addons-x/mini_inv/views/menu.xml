@@ -7,6 +7,10 @@
         <!-- menu categories -->
         <menuitem name="Inventory" id="mini_inv.inventory_menu" parent="mini_inv.menu_root"
                 action="mini_inv.action_window_inventory"/>
+        <!-- <menuitem name="Inventory" id="mini_inv.inventory_menu_sa" parent="mini_inv.menu_root"
+                action="mini_inv.action_server_lg_inventory_call_xml"/> -->
+        <!-- <menuitem name="Inventory [SA_return_action]" id="mini_inv.inventory_menu_sa2" parent="mini_inv.menu_root"
+                action="mini_inv.action_server_lg_inventory_return_action"/> -->
         <menuitem name="Stock" id="mini_inv.stock_menu" parent="mini_inv.menu_root"
                 action="mini_inv.action_window_stock"/>
         <menuitem name="History" id="mini_inv.history_menu" parent="mini_inv.menu_root"

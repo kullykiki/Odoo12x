@@ -25,11 +25,14 @@
     'data': [
         'security/ir.model.access.csv',
         
+        'data/lgt_seq.xml',
+        'data/sm_status.xml',
         'data/sm_unit.xml',
 
         'views/views.xml',
         'views/menu.xml',
         'views/templates.xml',
+        'views/search.xml',
 
         'data/lgt_seq.xml',
     ],

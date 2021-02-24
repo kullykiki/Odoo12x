@@ -14,6 +14,12 @@ class LGInventory(models.Model):
     x_approve1 = fields.Many2one(comodel_name='hr.employee', string='หัวหน้างาน')
     x_approve2 = fields.Many2one(comodel_name='hr.employee', string='ผู้มีอำนาจอนุมัติ')
     
+
+    ##test##
+    x_test1 = fields.Many2many(comodel_name='hr.employee', string='Test1')
+    x_test2 = fields.Many2many(comodel_name='hr.employee', string='Test2')
+
+
     ## ข้อมูลผู้บันทึก
     x_emp_name = fields.Many2one(comodel_name='hr.employee', string='ชื่อผู้บันทึก')
 
@@ -68,13 +74,13 @@ class LGInventory(models.Model):
 
     ###หัวหน้างาน
     x_approve1_date = fields.Date(string='วันที่อนุมัติ(ผู้อนุมัติ1)')
-    x_approve1 = fields.Many2one(comodel_name='hr.employee', string='ชื่อหัวหน้างาน')
+    x_approve1_name = fields.Many2one(comodel_name='hr.employee', string='ชื่อหัวหน้างาน')
     x_approve1_result = fields.Selection(string='ผลการอนุมัติ(ผู้อนุมัติ1)', selection=[('y', 'อนุมัติ'), ('n', 'ไม่อนุมัติ'),])
     x_approve1_reason = fields.Text(string='เหตุผลที่ไม่อนุมัติ(ผู้อนุมัติ1)')
     
     ###ผู้อนุมัติ
     x_approve2_date = fields.Date(string='วันที่อนุมัติ(ผู้อนุมัติ2)')
-    x_approve2 = fields.Many2one(comodel_name='hr.employee', string='ชื่อผู้มีอำนาจอนุมัติ')
+    x_approve2_name = fields.Many2one(comodel_name='hr.employee', string='ชื่อผู้มีอำนาจอนุมัติ')
     x_approve2_result = fields.Selection(string='ผลการอนุมัติ(ผู้อนุมัติ2)', selection=[('y', 'อนุมัติ'), ('n', 'ไม่อนุมัติ'),])
     x_approve2_reason = fields.Text(string='เหตุผลที่ไม่อนุมัติ(ผู้อนุมัติ2)')
 
@@ -91,7 +97,7 @@ class LGInventory(models.Model):
     x_logist_return_name = fields.Many2one(comodel_name='hr.employee', string='ชื่อผู้คืนของฝาก (ฝากของ)')
     
     ## ประวัติการเบิกของ
-    x_history = fields.One2many(comodel_name='mini_inv.x_lg_inventory', inverse_name='x_ref_deposit', string='ประวัติการเบิกของ')
+    x_history = fields.One2many(comodel_name='mini_inv.x_lg_inventory', inverse_name='x_ref_deposit_id', string='ประวัติการเบิกของ')
     
     ## รับของฝาก 
     x_r_receive_date = fields.Date(string='วันที่รับของฝาก (เบิกของ)')

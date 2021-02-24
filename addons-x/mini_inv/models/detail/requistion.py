@@ -82,33 +82,33 @@ class detailLGRequistion(models.Model):
                 rec.name = rec.x_destroy_item
     
 
-    @api.depends('x_item')
-    def _comp_remain_item(self):
+    # @api.depends('x_item')
+    # def _comp_remain_item(self):
 
-        """
-        Compute remain amount of item for requistion. except for 'ทรัพย์สินชำรุดรอการจำหน่าย'
-        """
-        for rec in self:
-            if rec.x_office_supplies and rec.x_item:
-                rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
-                    ('x_deposit_id','=',rec.x_office_supplies.x_deposit_id.id),
-                    ('x_item','=',rec.x_item.id)
-                ],limit=1)['x_qty_remain']
-            elif rec.x_oracle_item and rec.x_item:
-                rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
-                    ('x_deposit_id','=',rec.x_oracle_item.x_deposit_id.id),
-                    ('x_item','=',rec.x_item.id)
-                ],limit=1)['x_qty_remain']
-            elif rec.x_safety and rec.x_item:
-                rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
-                    ('x_deposit_id','=',rec.x_safety.x_deposit_id.id),
-                    ('x_item','=',rec.x_item.id)
-                ],limit=1)['x_qty_remain']
-            elif rec.x_media and rec.x_item:
-                rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
-                    ('x_deposit_id','=',rec.x_media.x_deposit_id.id),
-                    ('x_item','=',rec.x_item.id)
-                ],limit=1)['x_qty_remain']
+    #     """
+    #     Compute remain amount of item for requistion. except for 'ทรัพย์สินชำรุดรอการจำหน่าย'
+    #     """
+    #     for rec in self:
+    #         if rec.x_office_supplies and rec.x_item:
+    #             rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
+    #                 ('x_deposit_id','=',rec.x_office_supplies.x_deposit_id.id),
+    #                 ('x_item','=',rec.x_item.id)
+    #             ],limit=1)['x_qty_remain']
+    #         elif rec.x_oracle_item and rec.x_item:
+    #             rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
+    #                 ('x_deposit_id','=',rec.x_oracle_item.x_deposit_id.id),
+    #                 ('x_item','=',rec.x_item.id)
+    #             ],limit=1)['x_qty_remain']
+    #         elif rec.x_safety and rec.x_item:
+    #             rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
+    #                 ('x_deposit_id','=',rec.x_safety.x_deposit_id.id),
+    #                 ('x_item','=',rec.x_item.id)
+    #             ],limit=1)['x_qty_remain']
+    #         elif rec.x_media and rec.x_item:
+    #             rec.x_balance = self.env['mini_inv.x_lg_stock'].search([
+    #                 ('x_deposit_id','=',rec.x_media.x_deposit_id.id),
+    #                 ('x_item','=',rec.x_item.id)
+    #             ],limit=1)['x_qty_remain']
 
     
     @api.depends('x_item','x_destroy_item')
@@ -122,3 +122,7 @@ class detailLGRequistion(models.Model):
             else:
                 rec.x_unit = rec.x_item.x_item_unit.id
                 
+    @api.onchange('x_office_supplies')
+    def onchange_item_list_test(self):
+        item_ids = [ item.x_item.id for item in self.x_office_supplies.x_ref_deposit_id.x_d_l_consumables ]
+        return {'domain': {'x_item': [('id', 'in', item_ids)]}}

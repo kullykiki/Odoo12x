@@ -441,7 +441,7 @@
 
 <!-- ######################  🌸  ###################   🎪 Inventory 🎪   ######################  🌸  #########################  -->    
 
- <!-- Inventory List -->
+  <!-- Inventory List -->
     <record model="ir.ui.view" id="mini_inv.x_lg_inventory_list">
       <field name="name">mini_inv.x_lg_inventory_list</field>
       <field name="model">mini_inv.x_lg_inventory</field>
@@ -454,142 +454,398 @@
     </record>
    
 
-   <!-- Inventory Form -->
-   <record model="ir.ui.view" id="mini_inv.x_lg_inventory_form">
+  <!-- Inventory Form -->
+    <record model="ir.ui.view" id="mini_inv.x_lg_inventory_form">
       <field name="name">mini_inv.x_lg_inventory</field>
       <field name="model">mini_inv.x_lg_inventory</field>
       <field name="arch" type="xml">
-        <form>
-          <sheet>
-            
-            <label for="title" string="Inventory" style="font-size:23px; font-weight:bold;"/>
+        <form string="Deposit Inventory" class="o_invoice_form">
+          <header>
+            <field name="x_status"  widget="statusbar" clickable="1"  />
+          </header>
+          
+          <sheet string="Deposit Inventory Sheet">
+            <label for="title" string="ระบบฝากของ" style="font-size:23px; font-weight:bold;"/><br/>
 
-            <br/>
             <hr style="border-bottom:1px solid #ccc"/>
-              
-            <group cols="4">
-              <field name="x_name"/>
-              <field name="x_activity"  />
-              <field name="x_stock"/>
-              <field name="x_ref_deposit_id" attrs="{'invisible': [('x_activity','!=','r')]}" domain="[('x_activity','=','d')]" />
-            </group>
-
-            <notebook>
-
-              <page string = "ฝาก"
-                    attrs="{'invisible': [('x_activity','!=','d')]}">
-                
-                <group  string="วัสดุสำนักงานสิ้นเปลือง"  
-                        colspan="4">
-                  <field name="x_d_b_consumables" colspan="2"/>
-                  <newline />
-                  <field  name="x_d_l_consumables" 
-                          colspan="4" 
-                          nolabel="1"
-                          attrs="{'invisible': [('x_d_b_consumables','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="x_item" domain="[('x_item_type','=','office_supplies')]" />
-                        <field name="x_num" />
-                        <field name="x_unit" />
-                        <field name="x_active" invisible="1" />
-                    </tree>
-                  </field>
-                </group>
-
-                <group  string="อุปกรณ์ในระบบ Oracle มีไอเท็มโค้ด"  
-                        colspan="4">
-                  <field name="x_d_b_oracle_product" colspan="2" />
-                  <newline />
-                  <field  name="x_d_l_oracle_product" 
-                          colspan="4" 
-                          nolabel="1"
-                          attrs="{'invisible': [('x_d_b_oracle_product','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="x_item" domain="[('x_item_type','=','oracle_code_item')]" />
-                        <field name="x_oracle_item_code" />
-                        <field name="x_num" />
-                        <field name="x_unit" />
-                        <field name="x_active" invisible="1" />
-                    </tree>
-                  </field>
-                </group>
-
-                <group  string="อุุปกรณ์ความปลอดภัย"  
-                        colspan="4">
-                  <field name="x_d_b_safety" colspan="2" />
-                  <newline />
-                  <field  name="x_d_l_safety" 
-                          colspan="4" 
-                          nolabel="1"
-                          attrs="{'invisible': [('x_d_b_safety','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="x_item" domain="[('x_item_type','=','safety')]" />
-                        <field name="x_num" />
-                        <field name="x_unit" />
-                        <field name="x_active" invisible="1" />
-                    </tree>
-                  </field>
-                </group>
-
-                <group  string="สินค้าพรีเมียม หรือสื่อการตลาด"  
-                        colspan="4">
-                  <field name="x_d_b_media" colspan="2" />
-                  <newline />
-                  <field  name="x_d_l_media" 
-                          colspan="4" 
-                          nolabel="1"
-                          attrs="{'invisible': [('x_d_b_media','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="x_item" domain="[('x_item_type','=','media')]" />
-                        <field name="x_num" />
-                        <field name="x_unit" />
-                        <field name="x_active" invisible="1" />
-                    </tree>
-                  </field>
-                </group>
-
-                <group  string="ทรัพย์สินชำรุดรอการจำหน่าย"  
-                        colspan="4">
-                  <field name="x_d_b_damage_product" colspan="2" />
-                  <newline />
-                  <field  name="x_d_l_damage_product" 
-                          colspan="4" 
-                          nolabel="1"
-                          attrs="{'invisible': [('x_d_b_damage_product','!=',True)]}">
-                    <tree editable="bottom">
-                        <field name="x_destroy_item" />
-                        <field name="x_destroy_serial" />
-                        <field name="x_destroy_tag" />
-                        <field name="x_destroy_model" />
-                        <field name="x_active" invisible="1" />
-                    </tree>
-                  </field>
-                </group>
-
-              </page>
-
-              <page string = "เบิก"
-                    attrs="{'invisible': [('x_activity','!=','r')]}">
-
-              </page>
-
-
-            </notebook> 
             
-
+            <group>
+              <group>
+                <field name="x_activity" required="1"/>
+                <field name="x_name" readonly="1"/>
+                <field name="create_uid" invisible="1"/>
+              </group>
+              <group>
+                <field name="create_date" string="วันที่บันทึก"/>
+                <field name="x_ref_deposit_id" options="{'no_create': True}"  attrs="{'invisible': [('x_activity','!=', 'r')]}"/>
+                <field name="x_stock" options="{'no_create': True}" attrs="{'invisible': [('x_activity','!=', 'd')]}"/>
+              </group>
+            </group>
+            
+            <group string="ข้อมูลผู้บันทึก">
+              <group>
+                <field name="x_approve1" options="{'no_create': True}" required="1"/>
+              </group>
+              <group>
+                <field name="x_approve2" options="{'no_create': True}" required="1"/>
+              </group>
+            </group>
+            
+            <br/><br/>
+        <!-- EMAIL -->
+            <group>
+              <group>
+                <field name="x_email_to"/>
+                <field name="x_email_subject"/>
+              </group>
+              <group>
+                <field name="x_email_cc"/>
+              </group>
+            </group>
+        
+        <!-- TEST -->
+          <group>
+            <field name="x_test1"/>
+          </group>
+          <group>
+            <field name="x_test2"/>
+          </group>
+            
+          <!--ข้อมูลการยกเลิก  -->
+          <div attrs="{'invisible': [('x_cancel_emp','!=', True)]}" class = "card card-body bg-light">
+            <group>
+              <group>
+                <field name="x_cancel_emp"/>
+              </group>
+              <group>
+                <field name="x_cancel_date" />
+              </group>
+            </group>
+            <group>
+              <field name="x_cancel_reason" />
+            </group>
+          </div>
+          <br/><br/>
+            
+          
+            <notebook>
+              <page attrs="{'invisible': [('x_activity','!=', 'd')]}" string="ฝากของ">
+                <group string="ประเภทสินค้า / อุปกรณ์">
+                  
+                  <!--วัสดุสำนักงานสิ้นเปลือง-->
+                  <field name="x_d_b_consumables"
+                        string="วัสดุสำนักงานสิ้นเปลือง"/>
+                  <field  name="x_d_l_consumables" attrs="{'invisible': [('x_d_b_consumables','!=', True)]}"
+                          string="รายการวัสดุสำนักงานสิ้นเปลือง">
+                    <tree editable="bottom" >
+                      <field name="x_item"  domain="[('x_item_type','=','office_supplies')]" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--อุปกรณ์ในระบบ Oracle มี Item Code-->
+                  <field name="x_d_b_oracle_product" 
+                        string="อุปกรณ์ในระบบ Oracle มี Item Code"/>
+                  <field name="x_d_l_oracle_product" attrs="{'invisible': [('x_d_b_oracle_product','!=', True)]}"
+                        string="รายการอุปกรณ์ในระบบ Oracle มี Item Code" >
+                    <tree editable="bottom" >
+                      <field name="x_item"  domain="[('x_item_type','=','oracle_code_item')]" />
+                      <field name="x_oracle_item_code"  />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--อุุปกรณ์ความปลอดภัย-->
+                  <field name="x_d_b_safety"
+                        string="อุุปกรณ์ความปลอดภัย"/>
+                  <field name="x_d_l_safety" attrs="{'invisible': [('x_d_b_safety','!=', True)]}"
+                        string="รายการอุุปกรณ์ความปลอดภัย">
+                    <tree editable="bottom" >
+                      <field name="x_item"  domain="[('x_item_type','=','safety')]" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--สินค้าพรีเมียม หรือสื่อการตลาด-->
+                  <field name="x_d_b_media"
+                        string="สินค้าพรีเมียม หรือสื่อการตลาด"/>
+                  <field name="x_d_l_media" attrs="{'invisible': [('x_d_b_media','!=', True)]}"
+                        string="รายการสินค้าพรีเมียม หรือสื่อการตลาด">
+                    <tree editable="bottom" >
+                      <field name="x_item"  domain="[('x_item_type','=','media')]" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--ทรัพย์สินชำรุดรอการจำหน่าย-->
+                  <field name="x_d_b_damage_product"
+                        string="ทรัพย์สินชำรุดรอการจำหน่าย"/>
+                  <field name="x_d_l_damage_product" attrs="{'invisible': [('x_d_b_damage_product','!=', True)]}"
+                        string="รายการทรัพย์สินชำรุดรอการจำหน่าย">
+                    <tree editable="bottom" >
+                      <field name="x_destroy_item" string="Category Name" />
+                      <field name="x_destroy_serial" string="Serial No." />
+                      <field name="x_destroy_tag"  string="Tag No." />
+                      <field name="x_destroy_model" string="Model" />
+                    </tree>
+                  </field>  
+                </group>
+              </page>
+            <!-- =================================================================== ./ จบประเภทสินค้าและอุปกรณ์ที่ฝาก ======================================== -->
+            
+              <page attrs="{'invisible': [('x_activity','!=', 'r')]}" string="เบิกของ">
+                <group string="ประเภทสินค้า / อุปกรณ์ที่เบิก">
+                  
+                  <!--วัสดุสำนักงานสิ้นเปลือง-->
+                  <field name="x_r_b_consumables"
+                        string="วัสดุสำนักงานสิ้นเปลือง"/>
+                  <field  name="x_r_l_consumables" attrs="{'invisible': [('x_r_b_consumables','!=', True)]}"
+                          context="{
+                                      'default_x_office_supplies': x_ref_deposit_id,
+                                      'default_x_requistion_type': 'office_supplies'
+                                  }"
+                          string="รายการวัสดุสำนักงานสิ้นเปลือง">
+                    <tree editable="bottom" >
+                      <field name="x_office_supplies" invisible="1" /> 
+                      <field name="x_requistion_type" invisible="1"/>
+                      <field name="x_item"  domain="[('x_item_type','=','office_supplies')]" />
+                      <field name="x_balance" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--อุปกรณ์ในระบบ Oracle มี Item Code-->
+                  <field name="x_r_b_oracle_product" 
+                        string="อุปกรณ์ในระบบ Oracle มี Item Code"/>
+                  <field  name="x_r_l_oracle_product" 
+                          attrs="{'invisible': [('x_r_b_oracle_product','!=', True)]}"
+                          context="{
+                                      'default_x_oracle_item': x_ref_deposit_id,
+                                      'default_x_requistion_type': 'oracle_code_item'
+                                  }"
+                          string="รายการอุปกรณ์ในระบบ Oracle มี Item Code">
+                    <tree editable="bottom" >
+                      <field name="x_oracle_item" invisible="1" />
+                      <field name="x_requistion_type" invisible="1"/>
+                      <field name="x_item"  domain="[('x_item_type','=','oracle_code_item')]" />
+                      <field name="x_oracle_item_code"  />
+                      <field name="x_balance" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--อุุปกรณ์ความปลอดภัย-->
+                  <field name="x_r_b_safety"
+                        string="อุุปกรณ์ความปลอดภัย"/>
+                  <field  name="x_r_l_safety" 
+                          attrs="{'invisible': [('x_r_b_safety','!=', True)]}"
+                          context="{
+                                      'default_x_safety': x_ref_deposit_id,
+                                      'default_x_requistion_type': 'safety'
+                                  }"
+                          string="รายการอุุปกรณ์ความปลอดภัย">
+                    <tree editable="bottom" >
+                      <field name="x_safety" invisible="1" /> 
+                      <field name="x_requistion_type" invisible="1"/>
+                      <field name="x_item"  domain="[('x_item_type','=','safety')]" />
+                      <field name="x_balance" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>  
+                  
+                  <!--สินค้าพรีเมียม หรือสื่อการตลาด-->
+                  <field name="x_r_b_media"
+                        string="สินค้าพรีเมียม หรือสื่อการตลาด"/>
+                  <field  name="x_r_l_media" 
+                          attrs="{'invisible': [('x_r_b_media','!=', True)]}"
+                          context="{
+                                      'default_x_media': x_ref_deposit_id,
+                                      'default_x_requistion_type': 'media'
+                                  }"
+                          string="รายการสินค้าพรีเมียม หรือสื่อการตลาด">
+                    <tree editable="bottom" >
+                      <field name="x_media" invisible="1" /> 
+                      <field name="x_requistion_type" invisible="1"/>
+                      <field name="x_item"  domain="[('x_item_type','=','media')]" />
+                      <field name="x_balance" />
+                      <field name="x_num"  />
+                      <field name="x_unit"  />
+                    </tree>
+                  </field>
+                  
+                  <!--ทรัพย์สินชำรุดรอการจำหน่าย-->
+                  <field name="x_r_b_damage_product"
+                        string="ทรัพย์สินชำรุดรอการจำหน่าย"/>
+                  <field  name="x_r_l_damage_product" attrs="{'invisible': [('x_r_b_damage_product','!=', True)]}"
+                          domain="[('x_destroy_product','=',x_ref_deposit_id),('x_num','!=',0)]"
+                          string="รายการทรัพย์สินชำรุดรอการจำหน่าย">
+                    <tree editable="bottom" >
+                      <field name="x_destroy_item" string="Category Name" />
+                      <field name="x_destroy_serial" string="Serial No." />
+                      <field name="x_destroy_tag"  string="Tag No." />
+                      <field name="x_destroy_model" string="Model" />
+                    </tree>
+                  </field>
+                </group> 
+              </page>
+              <!-- =================================================================== ./ จบประเภทสินค้าและอุปกรณ์ที่เบิก ======================================== -->
+            
+              
+              <page attrs="{'invisible':[('x_status','=',1)]}"  string="สำหรับหัวหน้างานอนุมัติ">
+                <group string="พิจารณาอนุมัติสำหรับหัวหน้างาน">
+                  <group>
+                    <field name="x_approve1_date" string="วันที่อนุมัติ"/>
+                  </group>
+                  <group>
+                    <field name="x_approve1_name" string="ชื่อผู้อนุมัติ"/>
+                  </group>
+                </group>
+                <group>
+                  <field name="x_approve1_result" widget='radio' options="{'horizontal': true}" string="ผลการอนุมัติ"/>
+                  <field name="x_approve1_reason" attrs="{'invisible': [('x_approve1_result','!=', 'n')]}" string="เหตุผลที่ไม่อนุมัติ"/>
+                </group>
+              </page>
+              <!-- =================================================================== ./ จบหัวหน้างานอนุมัติ ======================================== -->
+            
+              
+              <page attrs="{'invisible':[('x_status','=',1)]}" string="สำหรับผู้อนุมัติสูงสุด">
+                <group string="พิจารณาอนุมัติสำหรับผู้อนุมัติสูงสุด">
+                  <group>
+                    <field name="x_approve2_date" string="วันที่อนุมัติ"/>
+                  </group>
+                  <group>
+                    <field name="x_approve2_name" string="ชื่อผู้อนุมัติ"/>
+                  </group>
+                </group>
+                <group>
+                  <field name="x_approve2_result" widget='radio' options="{'horizontal': true}" string="ผลการอนุมัติ"/>
+                  <field name="x_approve2_reason" attrs="{'invisible': [('x_approve2_result','!=', 'n')]}" string="เหตุผลที่ไม่อนุมัติ"/>
+                </group>
+              </page>
+              <!-- =================================================================== ./ จบผู้อนุมัติสูงสุดอนุมัติ ======================================== -->
+            
+              <page attrs="{'invisible': ['|','|',('x_activity','!=', 'd'),('x_status','=',1),('x_status','=',2)]}" string="ตรวจรับของฝาก">
+                <group string="ตรวจรับของฝาก">
+                  <group>
+                    <field name="x_logist_check_date" string="วันที่ตรวจรับของฝาก"/>
+                  </group>
+                  <group>
+                    <field name="x_logist_name" options="{'no_create': True}" string="ชื่อผู้ตรวจรับ"/>
+                  </group>
+                </group>
+                <group>
+                  <field name="x_logist_result" widget='radio' options="{'horizontal': true}" string="ผลการตรวจรับ"/>
+                  <field name="x_logist_reason" attrs="{'invisible': [('x_logist_result','!=', 'n')]}" string="เหตุผลที่ตรวจรับไม่ผ่าน"/>
+                </group>
+                <!-- ========================================================= ./ ตรวจรับของฝาก ======================================== -->
+                
+                <group attrs="{'invisible': [('x_logist_result','!=', 'n')]}" string="คืนของฝาก">
+                  <group>
+                    <field name="x_logist_return_date" string="วันที่คืนของฝาก"/>
+                    <field name="x_logist_return_name" options="{'no_create': True}" string="ชื่อผู้คืนของฝาก"/>
+                  </group>
+                  <group>
+                    <field name="x_logist_receiver" options="{'no_create': True}" string="ชื่อผู้รับของฝาก"/>
+                  </group>
+                </group>
+                <!-- ========================================================= ./ คืนของฝาก ======================================== -->
+              </page>
+              <!-- ========================================================= ./ จบตรวจรับของฝาก =============================================================== -->
+            
+            <page attrs="{'invisible': [('x_activity','!=', 'd')]}"  string="ประวัติการเบิกของ">
+              <group  string="ประวัติการเบิกของ">
+                <field name="x_history" readonly="1"  />
+              </group>
+            </page>
+            <!-- ========================================================= ./ จบประวัติการเบิกของ =============================================================== -->
+            
+            
+            <page attrs="{'invisible': ['|','|',('x_activity','!=', 'r'),('x_status','=',1),('x_status','=',2)]}" string="รับของฝาก">
+              <group string="รับของฝาก">
+                <group>
+                  <field name="x_r_receive_date" string="วันที่รับของฝาก"/>
+                  <field name="x_r_receiver" options="{'no_create': True}" string="ชื่อผู้รับของฝากคืน"/>
+                </group>
+                <group>
+                  <field name="x_r_return_name" options="{'no_create': True}" string="ชื่อผู้คืนของฝาก"/>
+                </group>
+              </group>
+            </page>
+            <!-- ========================================================= ./ จบรับของฝากคืน =============================================================== -->
+            </notebook>
           </sheet>
         </form>
       </field>
     </record>
     
 
-    <!-- actions opening views on models -->
-    
+  <!-- actions opening views on models -->  
     <record model="ir.actions.act_window" id="mini_inv.action_window_inventory">
       <field name="name">ระบบฝากของ</field>
       <field name="res_model">mini_inv.x_lg_inventory</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{"default_x_status": 1}</field>
     </record>
+  
+  <!-- server action to the one above -->
+    
+    <record model="ir.actions.server" id="mini_inv.action_server_lg_inventory_return_action">
+      <field name="name">Menu Inventory by Server Action2</field>
+      <field name="model_id" ref="model_mini_inv_x_lg_inventory"/>
+      <field name="state">code</field>
+      <field name="code">
+tree_view_id = env.ref('mini_inv.x_lg_inventory_list').id
+form_view_id = env.ref('mini_inv.x_lg_inventory_form').id
+
+action = {
+          "type": "ir.actions.act_window",
+          "name": "ของฝากนักกอล์ฟ",
+          "view_type": 'form',
+          "view_mode": "tree,form",
+          "res_model": "mini_inv.x_lg_inventory",
+          "target": "current",
+          "views" : [
+    [tree_view_id, 'tree'],
+    [form_view_id, 'form']
+]      
+        }
+ 
+      </field>
+    </record>
+
+  <!-- server action to the one above -->
+    
+    <record model="ir.actions.server" id="mini_inv.action_server_lg_inventory_call_xml">
+      <field name="name">Menu Inventory by Server Action</field>
+      <field name="model_id" ref="model_mini_inv_x_lg_inventory"/>
+      <field name="state">code</field>
+      <field name="code">
+action = env.ref('mini_inv.action_window_inventory').read()[0]
+
+status_start = env.ref('mini_inv.status_obj1').id
+context = {"default_x_status": status_start} 
+tree_view_id = env.ref('mini_inv.x_lg_inventory_list').id
+form_view_id = env.ref('mini_inv.x_lg_inventory_form').id
+action['views'] = [
+    [tree_view_id, 'tree'],
+    [form_view_id, 'form']
+]       
+
+
+
+ 
+      </field>
+    </record>
+   
+    <!-- [['x_relation','in',user.employee_ids[0]]] -->
+
 
 <!-- ######################  🌸  ###################  🌸🌸🌸🌸🌸🌸🌸  ########################  🌸  #########################  -->
 
