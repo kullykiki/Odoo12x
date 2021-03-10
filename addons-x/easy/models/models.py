@@ -7,6 +7,7 @@ class easy(models.Model):
 
     name = fields.Char()
     value = fields.Integer()
+    file = fields.Many2many('ir.attachment','easy_x_attach','easy_id','attach_id','Attach')
 #     value2 = fields.Float(compute="_value_pc", store=True)
 #     description = fields.Text()
 #
