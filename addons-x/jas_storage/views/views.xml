@@ -1,0 +1,237 @@
+<odoo>
+  <data>
+
+  <!-- <record id="ir_action_download_attachment" model="ir.actions.server">
+        <field name="name">Download</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="jas_storage.model_jas_storage_main"/>
+        <field name="state">code</field>
+        <field name="code">
+      if records:      
+
+      action = records.action_download_attachment()
+        </field>
+        <field name="binding_model_id" ref="jas_storage.model_jas_storage_main"/>
+    </record> -->
+
+
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="jas_storage.m_dept">
+      <field name="name">Department</field>
+      <field name="model">jas_storage.m_dept</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="jas_storage.m_rights">
+      <field name="name">Rights</field>
+      <field name="model">jas_storage.m_rights</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" string="อีเมล"/>
+          <field name="dept"/>
+          <field name="section"/>
+          <field name="province"/>
+          <field name="user_rights"/>
+          <field name="admin_rights"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="jas_storage.main">
+      <field name="name">Jas Cloud Storage</field>
+      <field name="model">jas_storage.main</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="dept"/>
+          <field name="section"/>
+          <field name="province"/>
+          <field name="create_name"/>
+          <field name="create_date" string="วันที่บันทึก"/>
+          
+        </tree>
+      </field>
+    </record>
+
+    <record id="jas_storage_group_dept" model="ir.ui.view">
+        <field name="name">Department</field>
+        <field name="model">jas_storage.main</field>
+        <field name="arch" type="xml">
+          <search string="x_name">
+            <!-- <field name="name_pj" /> -->
+            <group expand="0" string="Group By">
+                <filter name="group_dept" string="ฝ่าย" domain="[]" context="{'group_by':'dept'}"/>
+                
+            </group>
+          </search>
+        </field>
+    </record>
+
+    <!-- explicit form view definition -->
+    
+    <record model="ir.ui.view" id="jas_storage.form_main">
+      <field name="name">Jas Cloud Storage</field>
+      <field name="model">jas_storage.main</field>
+      <field name="arch" type="xml">
+      <form string="Jas Cloud Storage">
+              <style>   
+                  <!-- .o_image{
+                    width: 200px;
+                    height: 150px;
+                  } -->
+        </style>
+        <sheet>
+          <label for="x_name" string="Jas Cloud Storage" style="font-size:23px; font-weight:bold;"/>
+          <br/>
+          <hr style="border-bottom:1px solid #ccc"/>
+    
+          <group attrs="{'invisible':[('name','==',False)]}">
+            <field name="name" readonly="1" force_save="1"/>
+          </group>
+          
+          <group>
+            <group>
+              <field name="create_name" options="{'no_open': True,'no_create': True}" readonly="1" force_save="1"/> 
+              <field name="section"/>
+            </group>
+            <group>
+              <field name="dept"/>
+              <field name="province"/>
+            </group>
+          </group>
+          
+          <group>
+            <field name="attach" widget="many2many_binary"/>
+          </group>
+          
+          <!-- ข้อมูลจาก hr.employee -->
+          <notebook groups="base.group_system">
+            <page  string="ข้อมูลพนักงานจากระบบ hr.employee">
+              <group string="ข้อมูลผู้ใช้งานระบบ">
+                <group>
+                  <field name="employee_ids" options="{'no_open': True,'no_create': True}" /> 
+                </group>
+                <group>
+                  <field name="employee_work_place"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+          <!-- EOF ข้อมูลจาก hr.employee -->
+
+        </sheet>
+        <!-- >>>>>>>>>>  Chatter <<<<<<<<<< -->
+  
+        <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="message_ids" widget="mail_thread"/>
+        </div>
+        
+        <!--  >>>>>>>>>>  End Chatter <<<<<<<<<< -->
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="jas_storage.form_m_dept">
+      <field name="name">Department</field>
+      <field name="model">jas_storage.m_dept</field>
+      <field name="arch" type="xml">
+      <form string="Master Jas Department">
+        <sheet>
+          <label for="x_name" string="ข้อมูลฝ่าย" style="font-size:23px; font-weight:bold;"/><br/>
+          <hr style="border-bottom:1px solid #ccc"/>
+          <group>
+            <group>
+              <field name="name" />
+          </group>    
+          </group>
+        </sheet>
+      </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="jas_storage.form_m_rights">
+      <field name="name">Rights</field>
+      <field name="model">jas_storage.m_rights</field>
+      <field name="arch" type="xml">
+      <form string="Jas Storage Rights">
+      <sheet>
+        <label for="x_name" string="สิทธิกลุ่มผู้ใช้งานระบบ" style="font-size:23px; font-weight:bold;"/><br/>
+        <hr style="border-bottom:1px solid #ccc"/>
+        <group>
+          <group>
+            <field name="name" string="อีเมลผู้เข้าใช้งานระบบ"/>
+            <field name="section"/>
+        </group>    
+        <group>
+          <field name="dept" options="{'no_open': True,'no_create': True}" /> 
+          <field name="province"/>
+        </group>
+        </group>
+        
+        <group string="สิทธิผู้ใช้งานระบบ">
+          <group>
+            <field name="user_rights"/>
+            <field name="admin_rights"/>
+          </group>
+        </group>
+
+      </sheet>
+    </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="jas_storage.window_main">
+      <field name="name">Jas Cloud Storage</field>
+      <field name="res_model">jas_storage.main</field>
+      <field name="context">{"search_default_group_dept":1}</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="jas_storage.window_m_dept">
+      <field name="name">Department</field>
+      <field name="res_model">jas_storage.m_dept</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="jas_storage.window_m_rights">
+      <field name="name">Rights</field>
+      <field name="res_model">jas_storage.m_rights</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    
+    <!-- Top menu item -->
+    <menuitem name="Jas Cloud Storage" id="jas_storage.menu_root" web_icon="jas_storage,static/description/folder_1.png"/>
+    <menuitem name="Jas Cloud Storage Admin" id="jas_storage.menu_main" parent="jas_storage.menu_root" sequence="14"
+              action="jas_storage.window_main" groups="base.group_system,group_jas_storage_admin"/>
+    <menuitem name="Jas Cloud Storage" id="jas_storage.menu_main" parent="jas_storage.menu_root" sequence="14"
+              action="jas_storage.window_main" groups="base.group_system,group_jas_storage_user"/>
+
+    <menuitem name="Config" id="jas_storage.config" parent="jas_storage.menu_root"  groups="base.group_system,group_jas_storage_admin" sequence="17"/>
+
+    <menuitem name="[M] Department" id="jas_storage.menu_m_dept" parent="jas_storage.config"
+              action="jas_storage.window_m_dept"/>
+
+    <menuitem name="[M] Rights" id="jas_storage.menu_m_rights" parent="jas_storage.config"
+              action="jas_storage.window_m_rights"/>
+
+    <!-- <menuitem name="Records of Processing" id="data_inventory.menu_root" web_icon="data_inventory,static/description/personal-information_1.png"/>
+
+    <menuitem name="Records of Processing" id="data_inventory.menu_form" parent="data_inventory.menu_root" sequence="14"
+              action="data_inventory.window_form"/> -->
+
+
+
+  
+    
+  </data>
+</odoo>

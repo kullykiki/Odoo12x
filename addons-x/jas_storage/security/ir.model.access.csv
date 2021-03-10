@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jas_storage_main,jas_storage.main,model_jas_storage_main,,1,0,1,0
+access_jas_storage_m_dept,jas_storage.m_dept,model_jas_storage_m_dept,,1,1,1,1
+access_jas_storage_m_rights,jas_storage.m_rights,model_jas_storage_m_rights,,1,1,1,0
+access_jas_storage_m_rights_admin,jas_storage.m_rights,model_jas_storage_m_rights,base.group_system,1,1,1,1
