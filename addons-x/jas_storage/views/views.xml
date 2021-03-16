@@ -90,8 +90,8 @@
           <br/>
           <hr style="border-bottom:1px solid #ccc"/>
     
-          <group attrs="{'invisible':[('name','==',False)]}">
-            <field name="name" readonly="1" force_save="1"/>
+          <group >
+            <field name="name" />
           </group>
           
           <group>

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="export_attachment.list">
+      <field name="name">export_attachment list</field>
+      <field name="model">export_attachment.export_attachment</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="export_attachment.action_window">
+      <field name="name">export_attachment window</field>
+      <field name="res_model">export_attachment.export_attachment</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="export_attachment.action_server">
+      <field name="name">export_attachment server</field>
+      <field name="model_id" ref="model_export_attachment_export_attachment"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="export_attachment" id="export_attachment.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="export_attachment.menu_1" parent="export_attachment.menu_root"/>
+    <menuitem name="Menu 2" id="export_attachment.menu_2" parent="export_attachment.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="export_attachment.menu_1_list" parent="export_attachment.menu_1"
+              action="export_attachment.action_window"/>
+    <menuitem name="Server to list" id="export_attachment" parent="export_attachment.menu_2"
+              action="export_attachment.action_server"/>
+    -->
+  </data>
+</odoo>

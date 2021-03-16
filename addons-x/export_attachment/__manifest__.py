@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "easy",
+    'name': "export_attachment",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Download File in ir.attachment on your module to .zip file""",
 
     'description': """
-        Long description of module's purpose
+        Download File in ir.attachment on your module to .zip file .
+        Zip file category by create_uid and record name
+
     """,
 
-    'author': "My Company",
+    'author': "🤖 Odoo Ranger ✨",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
@@ -25,7 +26,6 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/server_action.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
